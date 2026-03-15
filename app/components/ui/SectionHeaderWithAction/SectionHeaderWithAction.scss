@@ -1,0 +1,113 @@
+@use '../../../../styles/variables' as *;
+
+.section-header-action {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.section-header-action__left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    max-width: 980px;
+}
+
+.section-header-action__right {
+    flex-shrink: 0;
+    margin-top: 24px;
+}
+
+.section-header-action__label {
+    display: inline-flex;
+    padding: 10px 17px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: $white;
+    margin-bottom: 24px;
+    color: $cta-green;
+    font-family: $font-aeonik;
+    font-size: 1.0625rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.section-header-action__title {
+    color: $white;
+    font-family: $font-aeonik;
+    font-size: 3.25rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 24px;
+
+    span {
+        color: $cta-green;
+    }
+}
+
+.section-header-action__description {
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.54167;
+    margin: 0;
+}
+
+@media (max-width: 1280px) {
+    .section-header-action__title {
+        font-size: 2.75rem;
+    }
+
+    .section-header-action__description {
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 1024px) {
+    .section-header-action {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .section-header-action__right {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-header-action__label {
+        font-size: 1rem;
+        padding: 8px 16px;
+        margin-bottom: 20px;
+    }
+
+    .section-header-action__title {
+        font-size: 2.25rem;
+        margin-bottom: 20px;
+    }
+
+    .section-header-action__description {
+        font-size: 1.125rem;
+        line-height: 1.45;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header-action__title {
+        font-size: 2rem;
+    }
+
+    .section-header-action__description {
+        font-size: 1rem;
+    }
+}

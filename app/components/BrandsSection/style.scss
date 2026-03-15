@@ -1,0 +1,129 @@
+@use '../../../styles/variables' as *;
+
+.brands-section {
+    background-color: $black;
+}
+
+.brands-slider-wrapper {
+    margin-top: clamp(2.75rem, 5vw, 5rem);
+}
+
+.brands-static-grid {
+    margin: clamp(2.75rem, 5vw, 5rem) auto 0;
+    width: min(100%, 70rem);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 2rem;
+    align-items: center;
+}
+
+.brands-static-grid__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 6rem;
+    padding: 1rem 1.25rem;
+    border-radius: 1rem;
+    border: 0.0625rem solid rgba(193, 193, 193, 0.18);
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.brands-empty-state {
+    margin: clamp(2.75rem, 5vw, 5rem) auto 0;
+    width: min(100%, 46rem);
+    border: 0.0625rem solid rgba(193, 193, 193, 0.45);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    text-align: center;
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.brands-slider {
+    width: min(100%, 1240px);
+    margin: 0 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+.brands-slider__track {
+    display: flex;
+    align-items: center;
+    gap: clamp(2.5rem, 5vw, 6rem);
+    width: max-content;
+    padding-inline: clamp(0.5rem, 1.6vw, 1.5rem);
+}
+
+.brands-slider__item {
+    width: clamp(14rem, 21vw, 20rem);
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brands-slider__logo-box {
+    position: relative;
+    width: 100%;
+    height: clamp(3rem, 6vw, 5rem);
+}
+
+@media (max-width: 1024px) {
+    .brands-slider {
+        width: 100%;
+    }
+
+    .brands-slider__item {
+        width: clamp(12rem, 38vw, 16rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .brands-slider-wrapper {
+        margin-top: 2.25rem;
+    }
+
+    .brands-static-grid {
+        margin-top: 2.25rem;
+        gap: 1rem;
+    }
+
+    .brands-static-grid__item {
+        min-height: 5rem;
+    }
+
+    .brands-empty-state {
+        margin-top: 2.25rem;
+        font-size: 0.9375rem;
+        padding: 0.875rem 1rem;
+    }
+
+    .brands-slider__track {
+        gap: 2rem;
+        padding-inline: 0.25rem;
+    }
+
+    .brands-slider__item {
+        width: min(72vw, 15rem);
+    }
+
+    .brands-slider__logo-box {
+        height: 3.25rem;
+    }
+}

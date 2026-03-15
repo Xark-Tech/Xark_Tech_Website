@@ -1,0 +1,53 @@
+@use '../../../../styles/variables' as *;
+
+.route-transition-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 3500;
+    pointer-events: none;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(44rem 18rem at 50% 42%, rgba(147, 213, 10, 0.16) 0%, rgba(147, 213, 10, 0) 75%),
+        linear-gradient(180deg, rgba(4, 4, 4, 0.88) 0%, rgba(0, 0, 0, 0.92) 100%);
+    opacity: 0;
+}
+
+.route-transition-logo-wrap {
+    position: relative;
+    width: min(15rem, 58vw);
+}
+
+.route-transition-logo {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+}
+
+.route-transition-logo--base {
+    opacity: 0.24;
+    filter: grayscale(1) brightness(1.35);
+}
+
+.route-transition-logo--sweep {
+    position: absolute;
+    inset: 0;
+    filter: drop-shadow(0 0 0.9rem rgba(147, 213, 10, 0.36));
+}
+
+.route-transition-content {
+    min-height: 100%;
+}
+
+@media (max-width: 40rem) {
+    .route-transition-logo-wrap {
+        width: min(13rem, 66vw);
+    }
+}
+

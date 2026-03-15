@@ -1,0 +1,81 @@
+@use '../../../styles/variables' as *;
+
+.capabilities-section {
+    background-color: $black;
+}
+
+// ─── Grid Layout ─────────────────────────────────────────────────────────────
+
+.core-items-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 60px 40px;
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 60px; // Spacing between columns
+        row-gap: 80px; // Spacing between rows
+    }
+}
+
+// ─── Individual Item Specs ──────────────────────────────────────────────────
+
+.core-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.core-item__icon {
+    width: 3.4375rem; // 55px / 16px
+    height: 3.4375rem;
+    aspect-ratio: 1 / 1;
+    position: relative; // For next/image fill
+    margin-bottom: 24px;
+}
+
+.core-item__title {
+    color: $white;
+    font-family: $font-aeonik;
+    font-size: 1.8125rem; // 29px / 16px
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal; // usually ~1.1
+    margin: 0 0 16px 0;
+}
+
+.core-item__description {
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1rem; // 16px
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.75; // 28px / 16px = 1.75 (175%)
+    letter-spacing: 0.01rem; // 0.16px / 16px
+    margin: 0;
+    max-width: 400px;
+}
+
+// ─── Responsive Typography ──────────────────────────────────────────────────
+
+@media (max-width: 1024px) {
+    .core-item__title {
+        font-size: 1.5rem; // 24px
+    }
+}
+
+@media (max-width: 768px) {
+    .core-item__title {
+        font-size: 1.25rem; // 20px
+    }
+
+    .core-item__description {
+        font-size: 0.9375rem; // 15px
+    }
+}

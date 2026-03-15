@@ -1,0 +1,108 @@
+@use '../../../../styles/variables' as *;
+
+.section-header {
+    display: flex;
+    flex-direction: column;
+
+    &.align-center {
+        align-items: center;
+        text-align: center;
+
+        .section-header__title,
+        .section-header__description {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    &.align-left {
+        align-items: flex-start;
+        text-align: left;
+    }
+}
+
+.section-header__label {
+    display: inline-flex;
+    padding: 10px 17px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: $white;
+    margin-bottom: 24px;
+
+    // Typography matches About Section pill
+    color: $cta-green;
+    font-family: $font-aeonik;
+    font-size: 1.0625rem; // 17px / 16
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.section-header__title {
+    // Typography matches About Section title
+    color: $white;
+    font-family: $font-aeonik;
+    font-size: 3.25rem; // 52px / 16
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 24px 0;
+    max-width: 800px;
+
+    span {
+        color: $cta-green;
+    }
+}
+
+.section-header__description {
+    // Typography matches About Section description
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.5rem; // 24px / 16
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.54167; // 37px / 24px
+    margin: 0;
+    max-width: 800px;
+}
+
+// ─── Responsive Adjustments ──────────────────────────────────────────────────
+
+@media (max-width: 1024px) {
+    .section-header__title {
+        font-size: 2.75rem; // 44px
+    }
+
+    .section-header__description {
+        font-size: 1.25rem; // 20px
+    }
+}
+
+@media (max-width: 768px) {
+    .section-header__label {
+        font-size: 1rem; // 16px
+        padding: 8px 16px;
+        margin-bottom: 20px;
+    }
+
+    .section-header__title {
+        font-size: 2.25rem; // 36px
+        margin-bottom: 20px;
+    }
+
+    .section-header__description {
+        font-size: 1.125rem; // 18px
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header__title {
+        font-size: 2rem; // 32px
+    }
+
+    .section-header__description {
+        font-size: 1rem; // 16px
+    }
+}

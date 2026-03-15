@@ -1,0 +1,8 @@
+<svg width="640" height="180" viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title1 desc1">
+  <title id="title1">Client 1</title>
+  <desc id="desc1">UTS logo placeholder</desc>
+  <rect width="640" height="180" fill="none"/>
+  <circle cx="86" cy="80" r="34" fill="#fff"/>
+  <text x="140" y="96" fill="#fff" font-family="Arial, sans-serif" font-size="78" font-weight="700">UTS</text>
+  <text x="52" y="145" fill="#fff" font-family="Arial, sans-serif" font-size="44" font-weight="600">Unistring Tech Solutions</text>
+</svg>

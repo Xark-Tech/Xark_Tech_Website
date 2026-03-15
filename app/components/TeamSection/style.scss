@@ -1,0 +1,242 @@
+@use '../../../styles/variables' as *;
+
+.team-section-container-main {
+    background: $black;
+    padding: 5rem 0 6rem;
+}
+
+.team-section {
+    .section-header {
+        margin-bottom: 3.375rem;
+    }
+
+    .section-header__title {
+        margin-bottom: 0;
+    }
+}
+
+.team-cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.625rem;
+    align-items: stretch;
+}
+
+.team-empty-state {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.team-item-card {
+    position: relative;
+    border-radius: 1.125rem;
+    overflow: hidden;
+    min-height: 30.625rem;
+    background: #111;
+}
+
+.team-item-card__image {
+    object-fit: cover;
+    filter: grayscale(100%);
+}
+
+.team-item-card__content {
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    background: rgba(0, 0, 0, 0.96);
+    border-radius: 0.75rem;
+    padding: 0.9375rem 1rem 0.875rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.team-item-card__left {
+    min-width: 0;
+
+    h6 {
+        margin: 0 0 0.3125rem;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: clamp(1.125rem, 0.95rem + 0.45vw, 1.4375rem);
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.12;
+        text-wrap: balance;
+    }
+
+    p {
+        margin: 0;
+        color: $light-grey;
+        font-family: $font-aeonik;
+        font-size: clamp(0.95rem, 0.82rem + 0.32vw, 1.125rem);
+        font-style: normal;
+        font-weight: 300;
+        line-height: 1.32;
+    }
+}
+
+.team-item-card__right {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    opacity: 0.95;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+
+    img {
+        width: 1.25rem;
+        height: 1.25rem;
+        filter: invert(1);
+    }
+
+    &:hover {
+        opacity: 1;
+        transform: translateY(-0.0625rem);
+    }
+}
+
+@media (max-width: 90rem) {
+    .team-cards-container {
+        gap: 1.125rem;
+    }
+
+    .team-item-card {
+        min-height: 27rem;
+    }
+
+    .team-item-card__left {
+        h6 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+    }
+}
+
+@media (max-width: 84rem) {
+    .team-section-container-main {
+        padding: 4.5rem 0 5.25rem;
+    }
+
+    .team-cards-container {
+        gap: 0.875rem;
+    }
+
+    .team-item-card {
+        min-height: 23.25rem;
+    }
+
+    .team-item-card__content {
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: 0.5rem;
+        padding: 0.75rem 0.75rem 0.6875rem;
+        gap: 0.5rem;
+    }
+
+    .team-item-card__left {
+        h6 {
+            font-size: 1.0625rem;
+            line-height: 1.1;
+        }
+
+        p {
+            font-size: 0.9rem;
+            line-height: 1.25;
+        }
+    }
+
+    .team-item-card__right {
+        width: 1.75rem;
+        height: 1.75rem;
+
+        img {
+            width: 1.0625rem;
+            height: 1.0625rem;
+        }
+    }
+}
+
+@media (max-width: 75rem) {
+    .team-cards-container {
+        gap: 0.75rem;
+    }
+
+    .team-item-card {
+        min-height: 21.75rem;
+    }
+}
+
+@media (max-width: 68rem) {
+    .team-section-container-main {
+        padding: 4.25rem 0 5rem;
+    }
+
+    .team-cards-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .team-item-card {
+        min-height: 29rem;
+    }
+
+    .team-item-card__content {
+        left: 0.75rem;
+        right: 0.75rem;
+        bottom: 0.75rem;
+        padding: 0.9375rem 1rem 0.875rem;
+    }
+}
+
+@media (max-width: 40rem) {
+    .team-section-container-main {
+        padding: 3.25rem 0 4rem;
+    }
+
+    .team-section {
+        .section-header {
+            margin-bottom: 2rem;
+        }
+    }
+
+    .team-cards-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .team-item-card {
+        min-height: 24rem;
+    }
+
+    .team-item-card__content {
+        left: 0.625rem;
+        right: 0.625rem;
+        bottom: 0.625rem;
+        padding: 0.8125rem 0.875rem;
+    }
+
+    .team-item-card__left {
+        h6 {
+            font-size: 1.1875rem;
+        }
+
+        p {
+            font-size: 0.9375rem;
+        }
+    }
+}

@@ -1,0 +1,232 @@
+@use '../../../../styles/variables' as *;
+
+.career-items-section {
+    background: $black;
+    padding: 2.875rem 0 6rem;
+}
+
+.career-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.career-items__filters {
+    display: flex;
+    align-items: center;
+    gap: 0.6875rem;
+    flex-wrap: wrap;
+}
+
+.career-items__filter {
+    border-radius: 6.25rem;
+    border: 0.0625rem solid rgba(193, 193, 193, 0.75);
+    background: transparent;
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    &.is-active {
+        background: $cta-green;
+        border-color: $cta-green;
+        color: $black;
+    }
+}
+
+.career-items__list {
+    margin-top: 4.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.career-item {
+    padding: 0 0 2.875rem;
+    border-bottom: 0.0625rem solid #696969;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2.5rem;
+
+    &:not(:first-child) {
+        padding-top: 2.875rem;
+    }
+
+    &:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+}
+
+.career-item__content {
+    flex: 1;
+    min-width: 0;
+
+    h3 {
+        margin: 0;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 1.5625rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+}
+
+.career-item__details {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-direction: column;
+
+    p {
+        margin: 0;
+        color: $light-grey;
+        font-family: $font-aeonik;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 1.5625rem;
+    }
+
+    span {
+        font-weight: 700;
+    }
+}
+
+.career-item__apply {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9375rem;
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-top: 0.1875rem;
+
+    span {
+        color: $white;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.5rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    img {
+        width: 1.875rem;
+        height: 1.875rem;
+        object-fit: contain;
+    }
+}
+
+.career-items__empty {
+    margin: 0;
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.0625rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+@media (max-width: 75rem) {
+    .career-items-section {
+        padding: 2.5rem 0 5rem;
+    }
+
+    .career-items__list {
+        margin-top: 3.5rem;
+    }
+
+    .career-item {
+        gap: 1.75rem;
+    }
+
+    .career-item__apply {
+        span {
+            font-size: 1.3125rem;
+        }
+    }
+}
+
+@media (max-width: 62rem) {
+    .career-items__filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.375rem;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .career-items__filter {
+        white-space: nowrap;
+        padding: 0.6875rem 1.0625rem;
+    }
+
+    .career-items__list {
+        margin-top: 2.5rem;
+    }
+
+    .career-item {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding-bottom: 2rem;
+
+        &:not(:first-child) {
+            padding-top: 2rem;
+        }
+    }
+
+    .career-item__content {
+        h3 {
+            font-size: 1.375rem;
+        }
+    }
+
+    .career-item__details {
+        margin-top: 1.125rem;
+    }
+
+    .career-item__apply {
+        gap: 0.75rem;
+
+        span {
+            font-size: 1.25rem;
+        }
+    }
+}
+
+@media (max-width: 40rem) {
+    .career-items-section {
+        padding: 2rem 0 3.5rem;
+    }
+
+    .career-item__content {
+        h3 {
+            font-size: 1.25rem;
+        }
+    }
+
+    .career-item__details {
+        p {
+            font-size: 0.9375rem;
+            line-height: 1.4375rem;
+        }
+    }
+
+    .career-item__apply {
+        span {
+            font-size: 1.125rem;
+        }
+
+        img {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    }
+}

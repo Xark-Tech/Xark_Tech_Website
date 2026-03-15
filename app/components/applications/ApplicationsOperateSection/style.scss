@@ -1,0 +1,275 @@
+@use '../../../../styles/variables' as *;
+
+.applications-operate-section {
+    background-color: $black;
+    padding: 5rem 0 7.5rem;
+
+    .section-header {
+        max-width: 74rem;
+        margin: 0 auto;
+    }
+}
+
+// ─── Alternating Row List ─────────────────────────────────────────────────────
+
+.applications-operate-list {
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+// ─── Single Row ───────────────────────────────────────────────────────────────
+
+.applications-operate-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+
+    // Reversed: image on right, content on left
+    &--reversed {
+        .applications-operate-row__image-wrap {
+            order: 2;
+        }
+
+        .applications-operate-row__content {
+            order: 1;
+        }
+    }
+}
+
+// ─── Image ────────────────────────────────────────────────────────────────────
+
+.applications-operate-row__image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: #111;
+    flex-shrink: 0;
+}
+
+// ─── Content ─────────────────────────────────────────────────────────────────
+
+.applications-operate-row__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.applications-operate-row__title {
+    margin: 0;
+    color: $white;
+    font-family: $font-aeonik;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.applications-operate-row__subtext {
+    margin: 0;
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.65;
+}
+
+// ─── Portable Text (body) ─────────────────────────────────────────────────────
+
+.applications-operate-row__body {
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.0625rem;
+    font-weight: 400;
+    line-height: 1.7;
+
+    p {
+        margin: 0 0 0.875rem;
+        color: $light-grey;
+        font-family: $font-aeonik;
+        font-size: 1.0625rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.7;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    strong {
+        color: $white;
+        font-weight: 600;
+    }
+
+    em {
+        font-style: italic;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: $white;
+        font-family: $font-aeonik;
+        font-weight: 700;
+        margin: 1.25rem 0 0.5rem;
+        line-height: 1.25;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    ul,
+    ol {
+        margin: 0 0 0.875rem;
+        padding-left: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    li {
+        color: $light-grey;
+        font-family: $font-aeonik;
+        font-size: 1.0625rem;
+        line-height: 1.65;
+    }
+
+    a {
+        color: $cta-green;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
+
+// ─── Empty state ──────────────────────────────────────────────────────────────
+
+.applications-operate-empty-state {
+    margin-top: 4rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 60rem;
+    padding: 2rem 1.5rem;
+    border: 0.0625rem solid rgba(222, 222, 222, 0.3);
+    border-radius: 1.125rem;
+    text-align: center;
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
+
+// Medium desktop
+@media (max-width: 90rem) {
+    .applications-operate-row__title {
+        font-size: 1.75rem;
+    }
+}
+
+// Tablet landscape
+@media (max-width: 75rem) {
+    .applications-operate-section {
+        padding: 4rem 0 5.5rem;
+    }
+
+    .applications-operate-list {
+        margin-top: 3.5rem;
+        gap: 4rem;
+    }
+
+    .applications-operate-row {
+        gap: 2.5rem;
+    }
+
+    .applications-operate-row__title {
+        font-size: 1.625rem;
+    }
+
+    .applications-operate-row__body,
+    .applications-operate-row__body p,
+    .applications-operate-row__body li {
+        font-size: 1rem;
+    }
+}
+
+// Tablet portrait — stack vertically
+@media (max-width: 56rem) {
+    .applications-operate-section {
+        padding: 3rem 0 4.5rem;
+    }
+
+    .applications-operate-list {
+        margin-top: 2.5rem;
+        gap: 3rem;
+    }
+
+    .applications-operate-row {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+
+        // override reversed layout — always image on top on mobile
+        &--reversed {
+            .applications-operate-row__image-wrap {
+                order: 0;
+            }
+
+            .applications-operate-row__content {
+                order: 1;
+            }
+        }
+    }
+
+    .applications-operate-row__image-wrap {
+        aspect-ratio: 16 / 9;
+        border-radius: 1rem;
+    }
+
+    .applications-operate-row__title {
+        font-size: 1.5rem;
+    }
+}
+
+// Mobile
+@media (max-width: 40rem) {
+    .applications-operate-section {
+        padding: 2.5rem 0 3.5rem;
+    }
+
+    .applications-operate-list {
+        gap: 2.5rem;
+    }
+
+    .applications-operate-row__title {
+        font-size: 1.375rem;
+    }
+
+    .applications-operate-row__body,
+    .applications-operate-row__body p,
+    .applications-operate-row__body li {
+        font-size: 0.9375rem;
+    }
+
+    .applications-operate-empty-state {
+        margin-top: 2rem;
+        font-size: 1rem;
+        padding: 1.5rem 1.25rem;
+    }
+}

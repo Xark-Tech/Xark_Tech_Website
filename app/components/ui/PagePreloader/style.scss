@@ -1,0 +1,46 @@
+@use '../../../../styles/variables' as *;
+
+.page-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(56rem 20rem at 50% 38%, rgba(147, 213, 10, 0.14) 0%, rgba(147, 213, 10, 0) 70%),
+        linear-gradient(180deg, #050505 0%, #000 100%);
+}
+
+.page-preloader__logo-wrap {
+    position: relative;
+    width: min(16.25rem, 62vw);
+}
+
+.page-preloader__logo {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+}
+
+.page-preloader__logo--base {
+    opacity: 0.28;
+    filter: grayscale(1) brightness(1.45);
+}
+
+.page-preloader__logo--sweep {
+    position: absolute;
+    inset: 0;
+    filter: drop-shadow(0 0 0.95rem rgba(147, 213, 10, 0.3));
+}
+
+@media (max-width: 40rem) {
+    .page-preloader__logo-wrap {
+        width: min(14rem, 70vw);
+    }
+}

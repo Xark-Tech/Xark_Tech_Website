@@ -1,0 +1,7 @@
+<svg width="640" height="180" viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title3 desc3">
+  <title id="title3">Client 3</title>
+  <desc id="desc3">KEYSIGHT logo placeholder</desc>
+  <rect width="640" height="180" fill="none"/>
+  <path d="M70 90 C80 45, 90 135, 100 90 C110 45, 120 135, 130 90 C140 45, 150 135, 160 90" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <text x="186" y="106" fill="#fff" font-family="Arial, sans-serif" font-size="72" font-weight="600">KEYSIGHT</text>
+</svg>

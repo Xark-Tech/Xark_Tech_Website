@@ -1,0 +1,304 @@
+@use '../../../../styles/variables' as *;
+
+.career-detail-page-container {
+    background: $black;
+    padding: 8.9375rem 0 7rem;
+}
+
+.career-detail-content {
+    width: 100%;
+    max-width: 45.0625rem;
+    color: $white;
+
+    h1 {
+        margin: 0;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 2.625rem;
+        font-weight: 700;
+        line-height: normal;
+    }
+}
+
+.career-detail-meta {
+    margin-top: 0.8125rem;
+
+    p {
+        margin: 0;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 1.125rem;
+        font-weight: 300;
+        line-height: 1.5625rem;
+    }
+
+    strong {
+        font-weight: 600;
+    }
+}
+
+.career-detail-block {
+    margin-top: 1.25rem;
+
+    h2 {
+        margin: 0;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 1.875rem;
+        font-weight: 700;
+        line-height: 1.5625rem;
+    }
+
+    p {
+        margin: 0.5rem 0 0;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 1.125rem;
+        font-weight: 300;
+        line-height: 1.5625rem;
+    }
+}
+
+.career-detail-richtext {
+    margin-top: 0.5rem;
+
+    p {
+        margin: 0;
+    }
+
+    p + p,
+    p + ul,
+    ul + p {
+        margin-top: 0.3125rem;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 1.375rem;
+        list-style-type: disc;
+    }
+
+    li {
+        margin: 0;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 1.125rem;
+        font-weight: 300;
+        line-height: 1.5625rem;
+    }
+}
+
+.career-detail-block--apply {
+    p {
+        margin-top: 0.4375rem;
+    }
+}
+
+.career-detail-apply-btn {
+    margin-top: 0.9375rem;
+}
+
+.career-apply-form-wrap {
+    margin-top: 1.5rem;
+    width: 100%;
+    overflow: hidden;
+    will-change: height, opacity, transform;
+}
+
+.career-apply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.career-form-row {
+    width: 100%;
+}
+
+.career-form-row--two {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.625rem;
+}
+
+.career-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    span {
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 1.1875rem;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    input {
+        width: 100%;
+        border-radius: 0.625rem;
+        border: 0.0625rem solid $stroke-grey;
+        background: transparent;
+        color: $white;
+        font-family: $font-aeonik;
+        font-size: 1.125rem;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    input::placeholder {
+        color: $light-grey;
+        opacity: 1;
+    }
+
+    input[type='text'],
+    input[type='tel'],
+    input[type='email'] {
+        height: 3.75rem;
+        padding: 0 1.4375rem;
+    }
+}
+
+.career-file-input {
+    padding: 0.875rem 1.1875rem;
+    height: auto;
+
+    &::file-selector-button {
+        margin-right: 0.8125rem;
+        border: 0;
+        border-radius: 0.5rem;
+        background: $cta-green;
+        color: $black;
+        font-family: $font-aeonik;
+        font-size: 0.875rem;
+        font-weight: 700;
+        padding: 0.4375rem 0.75rem;
+        cursor: pointer;
+    }
+}
+
+.career-form-submit {
+    align-self: flex-start;
+    border: 0;
+    border-radius: 0.5rem;
+    background: $cta-green;
+    color: $black;
+    font-family: $font-aeonik;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    padding: 0.5625rem 1.75rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
+    &:hover:not(:disabled) {
+        opacity: 0.93;
+        transform: translateY(-0.0625rem);
+    }
+
+    &:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+    }
+}
+
+.career-form-state {
+    margin: 0;
+    font-family: $font-aeonik;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+}
+
+.career-form-state--success {
+    color: $cta-green;
+}
+
+.career-form-state--error {
+    color: #ff7f7f;
+}
+
+@media (max-width: 90rem) {
+    .career-detail-page-container {
+        padding: 8rem 0 6rem;
+    }
+
+    .career-detail-content {
+        max-width: 48rem;
+
+        h1 {
+            font-size: 2.25rem;
+        }
+    }
+}
+
+@media (max-width: 62rem) {
+    .career-detail-page-container {
+        padding: 7rem 0 5rem;
+    }
+
+    .career-detail-content {
+        max-width: 100%;
+    }
+
+    .career-form-row--two {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 48rem) {
+    .career-detail-page-container {
+        padding: 6.25rem 1rem 4.25rem;
+    }
+
+    .career-detail-content {
+        h1 {
+            font-size: 1.875rem;
+        }
+    }
+
+    .career-detail-meta {
+        p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    .career-detail-block {
+        margin-top: 1.125rem;
+
+        h2 {
+            font-size: 1.5rem;
+            line-height: 1.4;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    .career-detail-richtext {
+        li {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    .career-form-field {
+        span {
+            font-size: 1rem;
+        }
+
+        input {
+            font-size: 1rem;
+        }
+
+        input[type='text'],
+        input[type='tel'],
+        input[type='email'] {
+            height: 3.25rem;
+            padding: 0 1rem;
+        }
+    }
+}

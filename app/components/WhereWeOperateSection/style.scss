@@ -1,0 +1,160 @@
+@use '../../../styles/variables' as *;
+
+// ─── Section ─────────────────────────────────────────────────────────────────
+
+.where-we-operate-section {
+    background-color: $black;
+}
+
+// ─── Grid Layout (6-col system for 3+2 distribution) ────────────────────────
+
+.operate-items-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(6, 1fr);
+
+        .operate-item {
+
+            // First 3 items: each spans 2 of 6 columns → 3 per row
+            &:nth-child(1),
+            &:nth-child(2),
+            &:nth-child(3) {
+                grid-column: span 2;
+            }
+
+            // Next 2 items: each spans 3 of 6 columns → 2 per row, filling equally
+            &:nth-child(4),
+            &:nth-child(5) {
+                grid-column: span 3;
+            }
+
+            // If a 6th item is added, back to 3-per-row
+            &:nth-child(n + 6) {
+                grid-column: span 2;
+            }
+        }
+    }
+}
+
+// ─── Card ────────────────────────────────────────────────────────────────────
+
+.operate-item {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.125rem; // 18px
+    border: 1px solid rgba(222, 222, 222, 0.15);
+    background-color: transparent;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+        border-color: rgba(222, 222, 222, 0.35);
+    }
+}
+
+// ─── Image ───────────────────────────────────────────────────────────────────
+
+.operate-item__image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #111;
+}
+
+// ─── Content ─────────────────────────────────────────────────────────────────
+
+.operate-item__content {
+    padding: 28px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+// ─── Item Title ──────────────────────────────────────────────────────────────
+
+.operate-item__title {
+    color: $white;
+    font-family: $font-aeonik;
+    font-size: 1.8125rem; // 29px / 16
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0;
+}
+
+// ─── Item Subtext ────────────────────────────────────────────────────────────
+
+.operate-item__subtext {
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.375rem; // 22px / 16
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 0;
+    // Clamp to 3 lines with trailing ellipsis
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.operate-empty-state {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 56rem;
+    padding: 2rem 1.5rem;
+    border: 0.0625rem solid rgba(222, 222, 222, 0.3);
+    border-radius: 1.125rem;
+    text-align: center;
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+
+@media (max-width: 1024px) {
+    .operate-item__title {
+        font-size: 1.5rem; // 24px
+    }
+
+    .operate-item__subtext {
+        font-size: 1.125rem; // 18px
+    }
+
+    .operate-item__content {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .operate-item__title {
+        font-size: 1.25rem; // 20px
+    }
+
+    .operate-item__subtext {
+        font-size: 1rem; // 16px
+    }
+
+    .operate-item__content {
+        padding: 20px;
+    }
+
+    .operate-empty-state {
+        font-size: 1rem;
+        padding: 1.5rem 1.25rem;
+    }
+}
