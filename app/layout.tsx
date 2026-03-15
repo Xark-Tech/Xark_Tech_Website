@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import "./globals.scss";
 import LayoutChrome from "./components/LayoutChrome/LayoutChrome";
+import { hasRecentSiteAccessGrant, SITE_ACCESS_STORAGE_KEY } from "@/lib/siteAccess";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://xark.info"),
@@ -49,15 +51,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const initialHasRecentSiteAccess = hasRecentSiteAccessGrant(
+    cookieStore.get(SITE_ACCESS_STORAGE_KEY)?.value ?? null
+  );
+
   return (
     <html lang="en">
       <body className="antialiased">
-        <LayoutChrome>{children}</LayoutChrome>
+        <LayoutChrome initialHasRecentSiteAccess={initialHasRecentSiteAccess}>
+          {children}
+        </LayoutChrome>
       </body>
     </html>
   );

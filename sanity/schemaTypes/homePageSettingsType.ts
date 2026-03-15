@@ -6,6 +6,25 @@ export const homePageSettingsType = defineType({
   type: "document",
   fields: [
     defineField({
+      name: "featuredApplications",
+      title: "Featured Application Cards",
+      description:
+        "Select up to 3 applications to show in the homepage Where We Operate section. The order here is the display order.",
+      type: "array",
+      of: [
+        defineField({
+          name: "applicationReference",
+          title: "Application",
+          type: "reference",
+          to: [{ type: "application" }],
+          options: {
+            disableNew: true,
+          },
+        }),
+      ],
+      validation: (Rule) => Rule.max(3).unique(),
+    }),
+    defineField({
       name: "featuredBlogPosts",
       title: "Featured News Cards",
       description:

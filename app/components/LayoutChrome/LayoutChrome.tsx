@@ -7,12 +7,14 @@ import Header from "../Header/Header";
 import GlobalHoverFx from "../ui/GlobalHoverFx/GlobalHoverFx";
 import PagePreloader from "../ui/PagePreloader/PagePreloader";
 import RouteTransition from "../ui/RouteTransition/RouteTransition";
+import SiteAccessGate from "../ui/SiteAccessGate/SiteAccessGate";
 
 type LayoutChromeProps = {
+  initialHasRecentSiteAccess: boolean;
   children: React.ReactNode;
 };
 
-const LayoutChrome = ({ children }: LayoutChromeProps) => {
+const LayoutChrome = ({ children, initialHasRecentSiteAccess }: LayoutChromeProps) => {
   const pathname = usePathname();
   const isStudioRoute = pathname?.startsWith("/studio");
 
@@ -23,6 +25,7 @@ const LayoutChrome = ({ children }: LayoutChromeProps) => {
   return (
     <>
       <PagePreloader />
+      <SiteAccessGate initialHasRecentSiteAccess={initialHasRecentSiteAccess} />
       <GlobalHoverFx />
       <Header />
       <RouteTransition>{children}</RouteTransition>

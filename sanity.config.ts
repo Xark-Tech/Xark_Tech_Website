@@ -6,7 +6,7 @@ import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import { dataset, projectId } from "./sanity/env";
 import { schemaTypes } from "./sanity/schemaTypes";
 
-const singletonTypes = new Set(["homePageSettings"]);
+const singletonTypes = new Set(["homePageSettings", "submissionEmailSettings"]);
 
 export default defineConfig({
   name: "default",
@@ -27,6 +27,14 @@ export default defineConfig({
                 S.document()
                   .schemaType("homePageSettings")
                   .documentId("homePageSettings")
+              ),
+            S.listItem()
+              .title("Submission Email ID")
+              .id("submissionEmailSettings")
+              .child(
+                S.document()
+                  .schemaType("submissionEmailSettings")
+                  .documentId("submissionEmailSettings")
               ),
             // Orderable Blog Posts list with drag handles
             orderableDocumentListDeskItem({

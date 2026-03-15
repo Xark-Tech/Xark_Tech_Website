@@ -10,8 +10,10 @@ import { leadershipType } from "./leadershipType";
 import { productApplicationOptionType } from "./productApplicationOptionType";
 import { productType } from "./productType";
 import { productTypeOptionType } from "./productTypeOptionType";
+import { submissionEmailSettingsType } from "./submissionEmailSettingsType";
 import { technicalAdvisorType } from "./technicalAdvisorType";
 import { xarkQuoteType } from "./xarkQuoteType";
+import { siteAccessSubmissionType } from "./siteAccessSubmissionType";
 
 export const schemaTypes = [
   blogCategoryType,
@@ -27,5 +29,7 @@ export const schemaTypes = [
   careerApplicationType,
   contactFormSubmissionType,
   homePageSettingsType,
+  submissionEmailSettingsType,
+  siteAccessSubmissionType,
   xarkQuoteType,
 ];

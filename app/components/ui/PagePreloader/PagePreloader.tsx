@@ -56,6 +56,8 @@ const PagePreloader = () => {
 
                 gsap.timeline({
                     onComplete: () => {
+                        (window as Window & { __xarkPreloaderComplete?: boolean }).__xarkPreloaderComplete = true;
+                        window.dispatchEvent(new CustomEvent('xark:preloader-complete'));
                         document.body.style.overflow = '';
                         setIsVisible(false);
                     },

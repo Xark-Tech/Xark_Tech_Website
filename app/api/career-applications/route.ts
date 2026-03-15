@@ -1,21 +1,13 @@
-import { createClient } from 'next-sanity';
 import { NextResponse } from 'next/server';
-import { apiVersion, dataset, projectId } from '@/sanity/env';
+import {
+    sendBrevoSubmissionEmail,
+    toParagraphs,
+    toPlainText,
+    writeClient,
+    writeToken,
+} from '@/lib/submissionNotifications';
 
 export const runtime = 'nodejs';
-
-const writeToken =
-    process.env.SANITY_API_EDIT_TOKEN ||
-    process.env.SANITY_API_WRITE_TOKEN ||
-    process.env.SANITY_API_READ_TOKEN;
-
-const writeClient = createClient({
-    projectId,
-    dataset,
-    apiVersion,
-    useCdn: false,
-    token: writeToken,
-});
 
 const isAllowedFileType = (mimeType: string) => {
     const allowedMimeTypes = new Set([
@@ -99,6 +91,43 @@ export async function POST(request: Request) {
             },
             submittedAt: new Date().toISOString(),
             status: 'new',
+        });
+
+        const cleanedName = name.trim();
+        const cleanedPhone = phone.trim();
+        const cleanedEmail = email.trim().toLowerCase();
+        const cleanedCareerTitle = careerTitle.trim();
+
+        await sendBrevoSubmissionEmail({
+            subject: `New Career Application: ${cleanedCareerTitle}`,
+            htmlContent: `
+                <div style="font-family: Arial, sans-serif; color: #111827;">
+                    <h2 style="margin: 0 0 16px;">New Career Application</h2>
+                    ${toParagraphs([
+                        ['Career', cleanedCareerTitle],
+                        ['Name', cleanedName],
+                        ['Email', cleanedEmail],
+                        ['Phone', cleanedPhone],
+                        ['CV File', cvFile.name],
+                        ['CV Asset URL', uploadedAsset.url || 'Stored in Sanity'],
+                    ])}
+                </div>
+            `,
+            textContent: toPlainText([
+                ['Career', cleanedCareerTitle],
+                ['Name', cleanedName],
+                ['Email', cleanedEmail],
+                ['Phone', cleanedPhone],
+                ['CV File', cvFile.name],
+                ['CV Asset URL', uploadedAsset.url || 'Stored in Sanity'],
+            ]),
+            attachment:
+                typeof uploadedAsset.url === 'string' && uploadedAsset.url.length > 0
+                    ? {
+                          name: cvFile.name,
+                          url: uploadedAsset.url,
+                      }
+                    : undefined,
         });
 
         return NextResponse.json({ message: 'Application submitted successfully.' }, { status: 201 });

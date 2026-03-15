@@ -5,9 +5,11 @@ import WhereWeOperateSection from './components/WhereWeOperateSection/WhereWeOpe
 import BlogSection, { BlogPostItem } from './components/BlogSection/BlogSection';
 import BrandsSection from './components/BrandsSection/BrandsSection';
 import BottomCtaSection from './components/BottomCtaSection/BottomCtaSection';
-import { getApplications } from '@/sanity/lib/applications';
 import { getBrandLogos } from '@/sanity/lib/brandLogos';
-import { getHomePageFeaturedBlogPosts } from '@/sanity/lib/homePage';
+import {
+  getHomePageFeaturedApplications,
+  getHomePageFeaturedBlogPosts,
+} from '@/sanity/lib/homePage';
 
 const formatCardDate = (date: string) =>
   new Date(date).toLocaleDateString('en-GB', {
@@ -17,7 +19,7 @@ const formatCardDate = (date: string) =>
   }).replace(/\//g, '-');
 
 export default async function Home() {
-  const latestApplications = await getApplications(3);
+  const latestApplications = await getHomePageFeaturedApplications(3);
   const latestBlogPosts = await getHomePageFeaturedBlogPosts(3);
   const brandLogos = await getBrandLogos();
 
@@ -36,7 +38,7 @@ export default async function Home() {
       <CoreCapabilitiesSection />
       <WhereWeOperateSection items={latestApplications} />
       <BlogSection posts={homeBlogPosts} maxItems={3} />
-      <BrandsSection logos={brandLogos} />
+      {brandLogos.length > 0 ? <BrandsSection logos={brandLogos} /> : null}
       <BottomCtaSection />
     </main>
   );

@@ -1,21 +1,13 @@
-import { createClient } from 'next-sanity';
 import { NextResponse } from 'next/server';
-import { apiVersion, dataset, projectId } from '@/sanity/env';
+import {
+    sendBrevoSubmissionEmail,
+    toParagraphs,
+    toPlainText,
+    writeClient,
+    writeToken,
+} from '@/lib/submissionNotifications';
 
 export const runtime = 'nodejs';
-
-const writeToken =
-    process.env.SANITY_API_EDIT_TOKEN ||
-    process.env.SANITY_API_WRITE_TOKEN ||
-    process.env.SANITY_API_READ_TOKEN;
-
-const writeClient = createClient({
-    projectId,
-    dataset,
-    apiVersion,
-    useCdn: false,
-    token: writeToken,
-});
 
 type ContactPayload = {
     name?: unknown;
@@ -83,6 +75,39 @@ export async function POST(request: Request) {
             message,
             submittedAt: new Date().toISOString(),
             status: 'new',
+        });
+
+        await sendBrevoSubmissionEmail({
+            subject: `New Contact Form Submission: ${name}`,
+            htmlContent: `
+                <div style="font-family: Arial, sans-serif; color: #111827;">
+                    <h2 style="margin: 0 0 16px;">New Contact Form Submission</h2>
+                    ${toParagraphs([
+                        ['Name', name],
+                        ['Email', email],
+                        ['Phone', phone],
+                        ['Company Name', companyName],
+                        ['City', city],
+                        ['Street Address', streetAddress],
+                        ['Postal Code', postalCode],
+                        ['Country', country],
+                        ['Interested Product', interestedProduct],
+                        ['Message', message],
+                    ])}
+                </div>
+            `,
+            textContent: toPlainText([
+                ['Name', name],
+                ['Email', email],
+                ['Phone', phone],
+                ['Company Name', companyName],
+                ['City', city],
+                ['Street Address', streetAddress],
+                ['Postal Code', postalCode],
+                ['Country', country],
+                ['Interested Product', interestedProduct],
+                ['Message', message],
+            ]),
         });
 
         return NextResponse.json({ message: 'Message submitted successfully.' }, { status: 201 });
