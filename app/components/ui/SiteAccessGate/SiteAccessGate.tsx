@@ -9,15 +9,15 @@ import './style.scss';
 
 const CLOSE_ANIMATION_MS = 420;
 const PHONE_COUNTRY_CODES = [
-    { label: 'India (+91)', value: '+91' },
-    { label: 'United States (+1)', value: '+1' },
-    { label: 'United Kingdom (+44)', value: '+44' },
-    { label: 'Germany (+49)', value: '+49' },
-    { label: 'Singapore (+65)', value: '+65' },
-    { label: 'Japan (+81)', value: '+81' },
-    { label: 'Australia (+61)', value: '+61' },
-    { label: 'UAE (+971)', value: '+971' },
-    { label: 'Saudi Arabia (+966)', value: '+966' },
+    { value: '+91', flag: '🇮🇳' },
+    { value: '+1', flag: '🇺🇸' },
+    { value: '+44', flag: '🇬🇧' },
+    { value: '+49', flag: '🇩🇪' },
+    { value: '+65', flag: '🇸🇬' },
+    { value: '+81', flag: '🇯🇵' },
+    { value: '+61', flag: '🇦🇺' },
+    { value: '+971', flag: '🇦🇪' },
+    { value: '+966', flag: '🇸🇦' },
 ];
 
 type GateValues = {
@@ -81,6 +81,8 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
         () => 'Share your details to continue. We only ask again after 3 days.',
         [],
     );
+    const selectedPhoneOption =
+        PHONE_COUNTRY_CODES.find((option) => option.value === values.phoneCountryCode) || PHONE_COUNTRY_CODES[0];
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -188,18 +190,23 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
                     <label className="site-access-gate__field">
                         <span>Phone</span>
                         <div className="site-access-gate__phone-row">
-                            <select
-                                name="phoneCountryCode"
-                                aria-label="Country code"
-                                value={values.phoneCountryCode}
-                                onChange={handleChange}
-                            >
-                                {PHONE_COUNTRY_CODES.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className="site-access-gate__country-select">
+                                <span className="site-access-gate__country-flag" aria-hidden="true">
+                                    {selectedPhoneOption.flag}
+                                </span>
+                                <select
+                                    name="phoneCountryCode"
+                                    aria-label="Country code"
+                                    value={values.phoneCountryCode}
+                                    onChange={handleChange}
+                                >
+                                    {PHONE_COUNTRY_CODES.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.value}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                             <input
                                 type="tel"
                                 name="phoneNumber"

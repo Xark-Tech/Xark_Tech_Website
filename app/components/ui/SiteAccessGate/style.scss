@@ -148,8 +148,28 @@
 
 .site-access-gate__phone-row {
     display: grid;
-    grid-template-columns: minmax(7.75rem, 9.25rem) minmax(0, 1fr);
+    grid-template-columns: minmax(7.5rem, 8.5rem) minmax(0, 1fr);
     gap: 0.75rem;
+}
+
+.site-access-gate__country-select {
+    position: relative;
+
+    select {
+        padding-left: 3rem;
+        padding-right: 2rem;
+    }
+}
+
+.site-access-gate__country-flag {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    z-index: 1;
+    transform: translateY(-50%);
+    font-size: 1.125rem;
+    line-height: 1;
+    pointer-events: none;
 }
 
 .site-access-gate__submit {
@@ -220,8 +240,21 @@
     }
 
     .site-access-gate__phone-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(6.5rem, 7.25rem) minmax(0, 1fr);
         gap: 0.625rem;
+        align-items: stretch;
+    }
+
+    .site-access-gate__country-select {
+        select {
+            padding-left: 2.5rem;
+            padding-right: 1.75rem;
+        }
+    }
+
+    .site-access-gate__country-flag {
+        left: 0.8125rem;
+        font-size: 1rem;
     }
 
     .site-access-gate__submit {

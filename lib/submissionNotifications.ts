@@ -39,6 +39,10 @@ type BrevoSendOptions = {
     htmlContent: string;
     textContent: string;
     attachment?: BrevoAttachment;
+    replyTo?: {
+        email: string;
+        name?: string;
+    };
 };
 
 const escapeHtml = (value: string) =>
@@ -89,6 +93,7 @@ export const sendBrevoSubmissionEmail = async ({
     htmlContent,
     textContent,
     attachment,
+    replyTo,
 }: BrevoSendOptions) => {
     if (!brevoApiKey || !brevoSenderEmail) {
         return false;
@@ -117,12 +122,22 @@ export const sendBrevoSubmissionEmail = async ({
                         email: recipientEmail,
                     },
                 ],
+                replyTo,
                 subject,
                 htmlContent,
                 textContent,
                 attachment: attachment ? [attachment] : undefined,
             }),
         });
+
+        if (!response.ok) {
+            const errorBody = await response.text().catch(() => '');
+            console.error('Brevo submission email failed', {
+                subject,
+                status: response.status,
+                body: errorBody,
+            });
+        }
 
         return response.ok;
     } catch {

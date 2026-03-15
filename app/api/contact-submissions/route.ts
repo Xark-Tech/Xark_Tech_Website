@@ -77,7 +77,7 @@ export async function POST(request: Request) {
             status: 'new',
         });
 
-        await sendBrevoSubmissionEmail({
+        const detailedEmailSent = await sendBrevoSubmissionEmail({
             subject: `New Contact Form Submission: ${name}`,
             htmlContent: `
                 <div style="font-family: Arial, sans-serif; color: #111827;">
@@ -108,7 +108,50 @@ export async function POST(request: Request) {
                 ['Interested Product', interestedProduct],
                 ['Message', message],
             ]),
+            replyTo: {
+                email,
+                name,
+            },
         });
+
+        console.log('Contact submission email detailed send result', {
+            email,
+            name,
+            success: detailedEmailSent,
+        });
+
+        if (!detailedEmailSent) {
+            const fallbackEmailSent = await sendBrevoSubmissionEmail({
+                subject: `Contact Submission Fallback: ${name}`,
+                htmlContent: `
+                    <div style="font-family: Arial, sans-serif; color: #111827;">
+                        <h2 style="margin: 0 0 16px;">Contact Submission Fallback</h2>
+                        ${toParagraphs([
+                            ['Name', name],
+                            ['Email', email],
+                            ['Phone', phone],
+                            ['Message', message],
+                        ])}
+                    </div>
+                `,
+                textContent: toPlainText([
+                    ['Name', name],
+                    ['Email', email],
+                    ['Phone', phone],
+                    ['Message', message],
+                ]),
+                replyTo: {
+                    email,
+                    name,
+                },
+            });
+
+            console.log('Contact submission email fallback send result', {
+                email,
+                name,
+                success: fallbackEmailSent,
+            });
+        }
 
         return NextResponse.json({ message: 'Message submitted successfully.' }, { status: 201 });
     } catch {

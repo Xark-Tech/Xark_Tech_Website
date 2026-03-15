@@ -7,6 +7,21 @@ import { gsap } from 'gsap';
 import ArrowButton from '../../ui/ArrowButton/ArrowButton';
 import './style.scss';
 
+const MAX_CV_FILE_SIZE = 2 * 1024 * 1024;
+const ALLOWED_CV_FILE_TYPES = new Set([
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+]);
+
+const formatFileSize = (sizeInBytes: number) => {
+    if (sizeInBytes < 1024 * 1024) {
+        return `${Math.max(1, Math.round(sizeInBytes / 1024))} KB`;
+    }
+
+    return `${(sizeInBytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
 interface CareerDetailContentProps {
     careerId: string;
     title: string;
@@ -51,7 +66,11 @@ const CareerDetailContent: React.FC<CareerDetailContentProps> = ({
         type: 'success' | 'error';
         message: string;
     } | null>(null);
+    const [selectedFileName, setSelectedFileName] = useState('');
+    const [fileError, setFileError] = useState('');
+    const [isDragActive, setIsDragActive] = useState(false);
     const formWrapRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleToggleForm = () => {
         setSubmissionState(null);
@@ -120,14 +139,96 @@ const CareerDetailContent: React.FC<CareerDetailContentProps> = ({
         });
     }, [isFormOpen, shouldRenderForm]);
 
+    const applySelectedFile = (file: File | null) => {
+        if (!file) {
+            setSelectedFileName('');
+            setFileError('');
+            return;
+        }
+
+        if (!ALLOWED_CV_FILE_TYPES.has(file.type)) {
+            setSelectedFileName('');
+            setFileError('Please upload a PDF, DOC, or DOCX file.');
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+            return;
+        }
+
+        if (file.size > MAX_CV_FILE_SIZE) {
+            setSelectedFileName('');
+            setFileError('CV file is too large. Maximum allowed size is 2MB.');
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+            return;
+        }
+
+        setSelectedFileName(`${file.name} (${formatFileSize(file.size)})`);
+        setFileError('');
+        setSubmissionState(null);
+    };
+
+    const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        applySelectedFile(event.target.files?.[0] ?? null);
+    };
+
+    const handleFileDrop = (event: React.DragEvent<HTMLLabelElement>) => {
+        event.preventDefault();
+        setIsDragActive(false);
+
+        const droppedFile = event.dataTransfer.files?.[0] ?? null;
+        if (!droppedFile) {
+            return;
+        }
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(droppedFile);
+
+        if (fileInputRef.current) {
+            fileInputRef.current.files = dataTransfer.files;
+        }
+
+        applySelectedFile(droppedFile);
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = event.currentTarget;
         const formData = new FormData(form);
+        const cvFile = formData.get('cvFile');
+
+        if (!(cvFile instanceof File) || cvFile.size === 0) {
+            setSubmissionState({
+                type: 'error',
+                message: 'Please upload your CV before submitting.',
+            });
+            return;
+        }
+
+        if (!ALLOWED_CV_FILE_TYPES.has(cvFile.type)) {
+            setFileError('Please upload a PDF, DOC, or DOCX file.');
+            setSubmissionState({
+                type: 'error',
+                message: 'Please upload a valid CV file.',
+            });
+            return;
+        }
+
+        if (cvFile.size > MAX_CV_FILE_SIZE) {
+            setFileError('CV file is too large. Maximum allowed size is 2MB.');
+            setSubmissionState({
+                type: 'error',
+                message: 'Please upload a CV that is 2MB or smaller.',
+            });
+            return;
+        }
+
         formData.set('careerId', careerId);
         formData.set('careerTitle', title);
         setIsSubmitting(true);
         setSubmissionState(null);
+        setFileError('');
 
         try {
             const response = await fetch('/api/career-applications', {
@@ -146,6 +247,8 @@ const CareerDetailContent: React.FC<CareerDetailContentProps> = ({
             }
 
             form.reset();
+            setSelectedFileName('');
+            setFileError('');
             setSubmissionState({
                 type: 'success',
                 message: 'Application submitted successfully. Our team will review and contact you.',
@@ -235,16 +338,43 @@ const CareerDetailContent: React.FC<CareerDetailContentProps> = ({
                                     </div>
 
                                     <div className="career-form-row">
-                                        <label className="career-form-field">
+                                        <div className="career-form-field">
                                             <span>CV Upload</span>
-                                            <input
-                                                name="cvFile"
-                                                type="file"
-                                                accept=".pdf,.doc,.docx"
-                                                className="career-file-input"
-                                                required
-                                            />
-                                        </label>
+                                            <label
+                                                className={`career-file-dropzone${isDragActive ? ' career-file-dropzone--active' : ''}${fileError ? ' career-file-dropzone--error' : ''}`}
+                                                onDragOver={(event) => {
+                                                    event.preventDefault();
+                                                    setIsDragActive(true);
+                                                }}
+                                                onDragLeave={(event) => {
+                                                    event.preventDefault();
+                                                    setIsDragActive(false);
+                                                }}
+                                                onDrop={handleFileDrop}
+                                            >
+                                                <input
+                                                    ref={fileInputRef}
+                                                    name="cvFile"
+                                                    type="file"
+                                                    accept=".pdf,.doc,.docx"
+                                                    className="career-file-input"
+                                                    required
+                                                    onChange={handleFileInputChange}
+                                                />
+                                                <span className="career-file-dropzone__title">
+                                                    Drag and drop your CV here
+                                                </span>
+                                                <span className="career-file-dropzone__meta">
+                                                    Or click to browse. PDF, DOC, DOCX up to 2MB.
+                                                </span>
+                                                {selectedFileName ? (
+                                                    <span className="career-file-dropzone__file">
+                                                        {selectedFileName}
+                                                    </span>
+                                                ) : null}
+                                            </label>
+                                            {fileError ? <p className="career-file-error">{fileError}</p> : null}
+                                        </div>
                                     </div>
 
                                     <button type="submit" className="career-form-submit" disabled={isSubmitting}>

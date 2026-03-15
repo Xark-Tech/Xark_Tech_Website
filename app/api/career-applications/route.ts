@@ -8,6 +8,7 @@ import {
 } from '@/lib/submissionNotifications';
 
 export const runtime = 'nodejs';
+const MAX_CV_FILE_SIZE = 2 * 1024 * 1024;
 
 const isAllowedFileType = (mimeType: string) => {
     const allowedMimeTypes = new Set([
@@ -51,14 +52,14 @@ export async function POST(request: Request) {
 
         if (!isAllowedFileType(cvFile.type)) {
             return NextResponse.json(
-                { message: 'Invalid CV file type. Please upload PDF or Word document.' },
+                { message: 'Invalid CV file type. Please upload PDF, DOC, or DOCX.' },
                 { status: 400 },
             );
         }
 
-        if (cvFile.size > 10 * 1024 * 1024) {
+        if (cvFile.size > MAX_CV_FILE_SIZE) {
             return NextResponse.json(
-                { message: 'CV file is too large. Maximum allowed size is 10MB.' },
+                { message: 'CV file is too large. Maximum allowed size is 2MB.' },
                 { status: 400 },
             );
         }
@@ -98,7 +99,7 @@ export async function POST(request: Request) {
         const cleanedEmail = email.trim().toLowerCase();
         const cleanedCareerTitle = careerTitle.trim();
 
-        await sendBrevoSubmissionEmail({
+        const detailedEmailSent = await sendBrevoSubmissionEmail({
             subject: `New Career Application: ${cleanedCareerTitle}`,
             htmlContent: `
                 <div style="font-family: Arial, sans-serif; color: #111827;">
@@ -121,6 +122,10 @@ export async function POST(request: Request) {
                 ['CV File', cvFile.name],
                 ['CV Asset URL', uploadedAsset.url || 'Stored in Sanity'],
             ]),
+            replyTo: {
+                email: cleanedEmail,
+                name: cleanedName,
+            },
             attachment:
                 typeof uploadedAsset.url === 'string' && uploadedAsset.url.length > 0
                     ? {
@@ -129,6 +134,37 @@ export async function POST(request: Request) {
                       }
                     : undefined,
         });
+
+        if (!detailedEmailSent) {
+            await sendBrevoSubmissionEmail({
+                subject: `Career Application Fallback: ${cleanedCareerTitle}`,
+                htmlContent: `
+                    <div style="font-family: Arial, sans-serif; color: #111827;">
+                        <h2 style="margin: 0 0 16px;">Career Application Fallback</h2>
+                        ${toParagraphs([
+                            ['Career', cleanedCareerTitle],
+                            ['Name', cleanedName],
+                            ['Email', cleanedEmail],
+                            ['Phone', cleanedPhone],
+                            ['CV File', cvFile.name],
+                            ['CV Asset URL', uploadedAsset.url || 'Stored in Sanity'],
+                        ])}
+                    </div>
+                `,
+                textContent: toPlainText([
+                    ['Career', cleanedCareerTitle],
+                    ['Name', cleanedName],
+                    ['Email', cleanedEmail],
+                    ['Phone', cleanedPhone],
+                    ['CV File', cvFile.name],
+                    ['CV Asset URL', uploadedAsset.url || 'Stored in Sanity'],
+                ]),
+                replyTo: {
+                    email: cleanedEmail,
+                    name: cleanedName,
+                },
+            });
+        }
 
         return NextResponse.json({ message: 'Application submitted successfully.' }, { status: 201 });
     } catch {

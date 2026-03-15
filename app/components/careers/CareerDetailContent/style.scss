@@ -160,21 +160,74 @@
 }
 
 .career-file-input {
-    padding: 0.875rem 1.1875rem;
-    height: auto;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    height: 100%;
+}
 
-    &::file-selector-button {
-        margin-right: 0.8125rem;
-        border: 0;
-        border-radius: 0.5rem;
-        background: $cta-green;
-        color: $black;
-        font-family: $font-aeonik;
-        font-size: 0.875rem;
-        font-weight: 700;
-        padding: 0.4375rem 0.75rem;
-        cursor: pointer;
+.career-file-dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-radius: 0.875rem;
+    border: 0.0625rem dashed rgba(193, 193, 193, 0.65);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1.125rem 1.1875rem;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+
+    &:hover {
+        border-color: rgba(147, 213, 10, 0.7);
+        background: rgba(147, 213, 10, 0.05);
     }
+}
+
+.career-file-dropzone--active {
+    border-color: $cta-green;
+    background: rgba(147, 213, 10, 0.08);
+    transform: translateY(-0.0625rem);
+}
+
+.career-file-dropzone--error {
+    border-color: rgba(255, 127, 127, 0.75);
+    background: rgba(255, 127, 127, 0.06);
+}
+
+.career-file-dropzone__title {
+    color: $white;
+    font-family: $font-aeonik;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.career-file-dropzone__meta {
+    color: $light-grey;
+    font-family: $font-aeonik;
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.career-file-dropzone__file {
+    color: $cta-green;
+    font-family: $font-aeonik;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.career-file-error {
+    margin: 0;
+    color: #ff7f7f;
+    font-family: $font-aeonik;
+    font-size: 0.875rem;
+    line-height: 1.4;
 }
 
 .career-form-submit {
