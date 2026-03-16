@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     "wireless infrastructure",
   ],
   icons: {
-    icon: [{ url: "/images/xark-green.png", type: "image/png" }],
-    shortcut: "/images/xark-green.png",
-    apple: "/images/xark-green.png",
+    icon: [{ url: "/xark-favicon.png", type: "image/png" }],
+    shortcut: "/xark-favicon.png",
+    apple: "/xark-favicon.png",
   },
   openGraph: {
     type: "website",

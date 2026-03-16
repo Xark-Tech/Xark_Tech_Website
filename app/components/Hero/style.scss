@@ -54,7 +54,7 @@
 .hero__sound-toggle {
     position: absolute;
     right: clamp(1rem, 2.2vw, 2rem);
-    bottom: clamp(1rem, 2vw, 1.5rem);
+    bottom: clamp(6rem, 8vw, 7.5rem);
     z-index: 3;
     display: inline-flex;
     align-items: center;
@@ -165,6 +165,21 @@
     }
 }
 
+@media (max-width: 1320px) {
+    .hero__title {
+        font-size: 46px;
+        max-width: 18ch;
+    }
+
+    .hero__subtext {
+        max-width: 640px;
+    }
+
+    .hero__sound-toggle {
+        bottom: 6.5rem;
+    }
+}
+
 // Tablet portrait (≤ 768px)
 @media (max-width: 768px) {
     .hero__inner {
@@ -194,7 +209,7 @@
 
     .hero__sound-toggle {
         right: 1rem;
-        bottom: 1rem;
+        bottom: calc(6.5rem + env(safe-area-inset-bottom));
         padding: 0.75rem 1rem;
         min-height: 3.25rem;
     }
@@ -227,5 +242,9 @@
 
     .hero__sound-toggle-label {
         font-size: 0.9375rem;
+    }
+
+    .hero__sound-toggle {
+        bottom: calc(10rem + env(safe-area-inset-bottom));
     }
 }
