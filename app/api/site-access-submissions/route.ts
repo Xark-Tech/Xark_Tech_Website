@@ -39,9 +39,9 @@ export async function POST(request: Request) {
         const email = getStringValue(payload.email).toLowerCase();
         const phone = getStringValue(payload.phone);
 
-        if (!name || !email || !phone) {
+        if (!name || !email) {
             return NextResponse.json(
-                { message: 'Name, email, and phone are required.' },
+                { message: 'Name and email are required.' },
                 { status: 400 },
             );
         }
@@ -58,11 +58,12 @@ export async function POST(request: Request) {
             _type: 'siteAccessSubmission',
             name,
             email,
-            phone,
+            phone: phone || undefined,
             submittedAt,
         });
 
         await sendBrevoSubmissionEmail({
+            recipientType: 'siteAccess',
             subject: `New Site Access Submission: ${name}`,
             htmlContent: `
                 <div style="font-family: Arial, sans-serif; color: #111827;">

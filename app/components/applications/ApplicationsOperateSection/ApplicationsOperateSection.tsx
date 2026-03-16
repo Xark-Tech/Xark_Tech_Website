@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
-import SectionHeader from '../../ui/SectionHeader/SectionHeader';
 import './style.scss';
 
 export interface ApplicationsOperateItem {
@@ -24,16 +23,6 @@ const ApplicationsOperateSection: React.FC<ApplicationsOperateSectionProps> = ({
     return (
         <section className="applications-operate-section">
             <div className="container">
-                <SectionHeader
-                    alignment="center"
-                        title={
-                            <>
-                                Where We <span>Operate</span>
-                            </>
-                        }
-                    description="Performance-critical environments where RF accuracy and system reliability are essential, guided by system-level requirements and real deployment conditions."
-                />
-
                 {hasItems ? (
                     <div className="applications-operate-list">
                         {displayItems.map((item, index) => {

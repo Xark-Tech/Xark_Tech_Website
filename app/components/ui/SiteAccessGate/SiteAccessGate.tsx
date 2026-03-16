@@ -106,7 +106,7 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
 
         try {
             const phoneNumber = values.phoneNumber.trim();
-            const formattedPhone = `${values.phoneCountryCode} ${phoneNumber}`.trim();
+            const formattedPhone = phoneNumber ? `${values.phoneCountryCode} ${phoneNumber}`.trim() : '';
 
             const response = await fetch('/api/site-access-submissions', {
                 method: 'POST',
@@ -215,7 +215,6 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
                                 placeholder="Enter your phone number"
                                 value={values.phoneNumber}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                     </label>

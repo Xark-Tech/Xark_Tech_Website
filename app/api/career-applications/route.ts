@@ -100,6 +100,7 @@ export async function POST(request: Request) {
         const cleanedCareerTitle = careerTitle.trim();
 
         const detailedEmailSent = await sendBrevoSubmissionEmail({
+            recipientType: 'career',
             subject: `New Career Application: ${cleanedCareerTitle}`,
             htmlContent: `
                 <div style="font-family: Arial, sans-serif; color: #111827;">
@@ -137,6 +138,7 @@ export async function POST(request: Request) {
 
         if (!detailedEmailSent) {
             await sendBrevoSubmissionEmail({
+                recipientType: 'career',
                 subject: `Career Application Fallback: ${cleanedCareerTitle}`,
                 htmlContent: `
                     <div style="font-family: Arial, sans-serif; color: #111827;">

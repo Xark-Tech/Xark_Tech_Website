@@ -21,7 +21,6 @@ export const siteAccessSubmissionType = defineType({
       name: "phone",
       title: "Phone",
       type: "string",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "submittedAt",

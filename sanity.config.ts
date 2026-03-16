@@ -29,7 +29,7 @@ export default defineConfig({
                   .documentId("homePageSettings")
               ),
             S.listItem()
-              .title("Submission Email ID")
+              .title("Submission Email IDs")
               .id("submissionEmailSettings")
               .child(
                 S.document()

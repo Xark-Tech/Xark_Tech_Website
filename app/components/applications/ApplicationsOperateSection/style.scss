@@ -3,17 +3,11 @@
 .applications-operate-section {
     background-color: $black;
     padding: 5rem 0 7.5rem;
-
-    .section-header {
-        max-width: 74rem;
-        margin: 0 auto;
-    }
 }
 
 // ─── Alternating Row List ─────────────────────────────────────────────────────
 
 .applications-operate-list {
-    margin-top: 5rem;
     display: flex;
     flex-direction: column;
     gap: 5rem;
@@ -191,7 +185,6 @@
     }
 
     .applications-operate-list {
-        margin-top: 3.5rem;
         gap: 4rem;
     }
 
@@ -217,7 +210,6 @@
     }
 
     .applications-operate-list {
-        margin-top: 2.5rem;
         gap: 3rem;
     }
 

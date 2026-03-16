@@ -78,6 +78,7 @@ export async function POST(request: Request) {
         });
 
         const detailedEmailSent = await sendBrevoSubmissionEmail({
+            recipientType: 'contact',
             subject: `New Contact Form Submission: ${name}`,
             htmlContent: `
                 <div style="font-family: Arial, sans-serif; color: #111827;">
@@ -122,6 +123,7 @@ export async function POST(request: Request) {
 
         if (!detailedEmailSent) {
             const fallbackEmailSent = await sendBrevoSubmissionEmail({
+                recipientType: 'contact',
                 subject: `Contact Submission Fallback: ${name}`,
                 htmlContent: `
                     <div style="font-family: Arial, sans-serif; color: #111827;">

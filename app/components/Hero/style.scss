@@ -63,7 +63,8 @@
     border-radius: 999px;
     background: rgba(0, 0, 0, 0.52);
     color: $white;
-    padding: 0.65rem 0.95rem;
+    padding: 0.875rem 1.2rem;
+    min-height: 3.5rem;
     cursor: pointer;
     backdrop-filter: blur(12px);
     transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
@@ -81,8 +82,8 @@
 }
 
 .hero__sound-toggle-icon {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1.375rem;
+    height: 1.375rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -97,8 +98,8 @@
 
 .hero__sound-toggle-label {
     font-family: $font-aeonik;
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     line-height: 1;
 }
 
@@ -194,7 +195,8 @@
     .hero__sound-toggle {
         right: 1rem;
         bottom: 1rem;
-        padding: 0.625rem 0.875rem;
+        padding: 0.75rem 1rem;
+        min-height: 3.25rem;
     }
 }
 
@@ -224,6 +226,6 @@
     }
 
     .hero__sound-toggle-label {
-        font-size: 0.875rem;
+        font-size: 0.9375rem;
     }
 }

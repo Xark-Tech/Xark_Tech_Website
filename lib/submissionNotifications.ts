@@ -21,12 +21,18 @@ const brevoSenderName = process.env.BREVO_SENDER_NAME || 'XARK Website';
 
 const SUBMISSION_EMAIL_QUERY = groq`
   *[_type == "submissionEmailSettings" && _id == "submissionEmailSettings"][0]{
-    recipientEmail
+    recipientEmail,
+    siteAccessRecipientEmail,
+    contactRecipientEmail,
+    careerRecipientEmail
   }
 `;
 
 type SubmissionEmailSettingsRaw = {
     recipientEmail?: string;
+    siteAccessRecipientEmail?: string;
+    contactRecipientEmail?: string;
+    careerRecipientEmail?: string;
 };
 
 type BrevoAttachment = {
@@ -39,6 +45,7 @@ type BrevoSendOptions = {
     htmlContent: string;
     textContent: string;
     attachment?: BrevoAttachment;
+    recipientType?: 'siteAccess' | 'contact' | 'career';
     replyTo?: {
         email: string;
         name?: string;
@@ -68,7 +75,12 @@ export const toPlainText = (lines: Array<[string, string]>) =>
         .map(([label, value]) => `${label}: ${value}`)
         .join('\n');
 
-export const getSubmissionRecipientEmail = async () => {
+const normalizeEmail = (value?: string) =>
+    typeof value === 'string' && value.trim().length > 0 ? value.trim().toLowerCase() : null;
+
+export const getSubmissionRecipientEmail = async (
+    recipientType: 'siteAccess' | 'contact' | 'career' = 'contact',
+) => {
     if (!writeToken) {
         return null;
     }
@@ -80,9 +92,17 @@ export const getSubmissionRecipientEmail = async () => {
             { next: { revalidate: 60 } },
         );
 
-        return typeof settings?.recipientEmail === 'string' && settings.recipientEmail.trim().length > 0
-            ? settings.recipientEmail.trim().toLowerCase()
-            : null;
+        const fallbackRecipient = normalizeEmail(settings?.recipientEmail);
+
+        if (recipientType === 'siteAccess') {
+            return normalizeEmail(settings?.siteAccessRecipientEmail) || fallbackRecipient;
+        }
+
+        if (recipientType === 'career') {
+            return normalizeEmail(settings?.careerRecipientEmail) || fallbackRecipient;
+        }
+
+        return normalizeEmail(settings?.contactRecipientEmail) || fallbackRecipient;
     } catch {
         return null;
     }
@@ -93,13 +113,14 @@ export const sendBrevoSubmissionEmail = async ({
     htmlContent,
     textContent,
     attachment,
+    recipientType = 'contact',
     replyTo,
 }: BrevoSendOptions) => {
     if (!brevoApiKey || !brevoSenderEmail) {
         return false;
     }
 
-    const recipientEmail = await getSubmissionRecipientEmail();
+    const recipientEmail = await getSubmissionRecipientEmail(recipientType);
     if (!recipientEmail) {
         return false;
     }
