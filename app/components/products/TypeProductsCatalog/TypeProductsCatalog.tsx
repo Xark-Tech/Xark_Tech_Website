@@ -47,13 +47,6 @@ const TypeProductsCatalog: React.FC<TypeProductsCatalogProps> = ({
 
     return (
         <>
-            <CategoryFilter
-                groups={groups}
-                activeSelections={{
-                    application: activeApplicationId,
-                }}
-                onItemSelect={handleItemSelect}
-            />
             <AllProductsSection
                 title={`All ${typeName} Products`}
                 items={filteredProducts.map((product) => ({
@@ -65,6 +58,13 @@ const TypeProductsCatalog: React.FC<TypeProductsCatalogProps> = ({
                     points: product.points,
                     enableDetailPage: product.enableDetailPage,
                 }))}
+            />
+            <CategoryFilter
+                groups={groups}
+                activeSelections={{
+                    application: activeApplicationId,
+                }}
+                onItemSelect={handleItemSelect}
             />
         </>
     );

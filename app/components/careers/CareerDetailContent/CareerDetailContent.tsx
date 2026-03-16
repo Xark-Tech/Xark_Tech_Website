@@ -57,7 +57,7 @@ const CareerDetailContent: React.FC<CareerDetailContentProps> = ({
     employmentType,
     summary,
     body,
-    applicationEmail = 'engineering@xark.info',
+    applicationEmail = 'recruitment@xark.info',
 }) => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [shouldRenderForm, setShouldRenderForm] = useState(false);

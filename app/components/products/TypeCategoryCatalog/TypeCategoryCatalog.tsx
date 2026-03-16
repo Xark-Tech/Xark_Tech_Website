@@ -58,7 +58,7 @@ const TypeCategoryCatalog: React.FC<TypeCategoryCatalogProps> = ({
         : 'All Product Families';
 
     const catalogDescription = activeApplicationName
-        ? `These are the product types most relevant to ${activeApplicationName}. Clear the use-case filter above to view the full portfolio.`
+        ? `These are the product types most relevant to ${activeApplicationName}. Clear the use-case filter below to view the full portfolio.`
         : 'Once you know the use case, browse the portfolio by product type to move into the right family of MMICs, FEMs, switches, amplifiers, and antenna systems.';
 
     const handleItemSelect = (_groupId: string, item: CategoryFilterItem) => {
@@ -67,18 +67,18 @@ const TypeCategoryCatalog: React.FC<TypeCategoryCatalogProps> = ({
 
     return (
         <>
+            <TypeCategoryCards
+                eyebrow="Browse by Product Type"
+                title={catalogTitle}
+                description={catalogDescription}
+                items={filteredTypeCards}
+            />
             <CategoryFilter
                 groups={groups}
                 activeSelections={{
                     application: activeApplicationId,
                 }}
                 onItemSelect={handleItemSelect}
-            />
-            <TypeCategoryCards
-                eyebrow="Browse by Product Type"
-                title={catalogTitle}
-                description={catalogDescription}
-                items={filteredTypeCards}
             />
         </>
     );
