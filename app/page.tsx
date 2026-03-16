@@ -12,11 +12,10 @@ import {
 } from '@/sanity/lib/homePage';
 
 const formatCardDate = (date: string) =>
-  new Date(date).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: '2-digit',
-    year: '2-digit',
-  }).replace(/\//g, '-');
+  new Date(date).toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
 
 export default async function Home() {
   const latestApplications = await getHomePageFeaturedApplications(3);

@@ -48,7 +48,7 @@ const CoreCapabilitiesSection = () => {
                         </div>
                         <h3 className="core-item__title">Solid State Power Amplifiers</h3>
                         <p className="core-item__description">
-                            Wideband, high-power RF amplifiers across L to Ka bands, developed as high-efficiency RF subsystems for radar and communication applications.
+                            Wideband, high-power RF amplifiers, developed as high-efficiency RF subsystems for radar and communication applications.
                         </p>
                     </div>
 

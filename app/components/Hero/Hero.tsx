@@ -63,7 +63,7 @@ const Hero = () => {
                             GaN RF design for radar, SatCom, and telecom infrastructure.
                         </h1>
                         <p className="hero__subtext">
-                            We design GaN and RF building blocks including MMICs, front-end modules, power
+                            We design GaN based RF building blocks including MMICs, front-end modules, power
                             amplifiers, and phased-array subsystems for defence electronics, space and SatCom,
                             and telecom infrastructure. Engineered in India and validated for repeatable
                             deployment performance.

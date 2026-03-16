@@ -16,12 +16,10 @@ export const metadata: Metadata = {
 
 const formatCardDate = (date: string) =>
     new Date(date)
-        .toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit',
-        })
-        .replace(/\//g, '-');
+        .toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric',
+        });
 
 type BlogPageProps = {
     searchParams: Promise<{ category?: string }>;
