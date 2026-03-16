@@ -123,7 +123,6 @@
     ul,
     ol {
         margin: 0 0 0.875rem;
-        padding-left: 1.5rem;
         display: flex;
         flex-direction: column;
         gap: 0.375rem;
@@ -133,11 +132,37 @@
         }
     }
 
+    ul {
+        padding: 0;
+        list-style: none;
+    }
+
+    ol {
+        padding-left: 1.5rem;
+    }
+
     li {
+        position: relative;
         color: $light-grey;
         font-family: $font-aeonik;
         font-size: 1.0625rem;
         line-height: 1.65;
+    }
+
+    ul li {
+        padding-left: 1.5rem;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0.62rem;
+            left: 0;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 999px;
+            background: $cta-green;
+            box-shadow: 0 0 0.9rem rgba(147, 213, 10, 0.34);
+        }
     }
 
     a {
