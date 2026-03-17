@@ -17,21 +17,51 @@ const Hero = () => {
     const [videoSource, setVideoSource] = useState<string | null>(null);
 
     useEffect(() => {
-        const probe = document.createElement('video');
-        const canPlayMp4 = probe.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
-        const canPlayWebm = probe.canPlayType('video/webm; codecs="vp8, vorbis"');
+        let isMounted = true;
 
-        if (canPlayMp4) {
-            setVideoSource(HERO_VIDEO_SOURCES.mp4);
-            return;
-        }
+        const pickVideoSource = async () => {
+            const probe = document.createElement('video');
+            const candidates = [
+                {
+                    src: HERO_VIDEO_SOURCES.mp4,
+                    type: 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',
+                },
+                {
+                    src: HERO_VIDEO_SOURCES.webm,
+                    type: 'video/webm; codecs="vp8, vorbis"',
+                },
+            ];
 
-        if (canPlayWebm) {
-            setVideoSource(HERO_VIDEO_SOURCES.webm);
-            return;
-        }
+            for (const candidate of candidates) {
+                if (!probe.canPlayType(candidate.type)) {
+                    continue;
+                }
 
-        setHasVideoError(true);
+                try {
+                    const response = await fetch(candidate.src, {
+                        method: 'HEAD',
+                        cache: 'no-store',
+                    });
+
+                    if (response.ok) {
+                        if (isMounted) {
+                            setVideoSource(candidate.src);
+                        }
+                        return;
+                    }
+                } catch {}
+            }
+
+            if (isMounted) {
+                setHasVideoError(true);
+            }
+        };
+
+        pickVideoSource();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     const handleToggleMute = () => {
@@ -72,6 +102,7 @@ const Hero = () => {
                     />
                 ) : (
                     <video
+                        key={videoSource}
                         ref={videoRef}
                         className="hero__video"
                         autoPlay
