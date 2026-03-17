@@ -128,6 +128,12 @@ export const sendBrevoSubmissionEmail = async ({
     replyTo,
 }: BrevoSendOptions) => {
     if (!brevoApiKey || !brevoSenderEmail) {
+        console.error('Brevo email sending skipped because required environment variables are missing', {
+            hasBrevoApiKey: Boolean(brevoApiKey),
+            hasBrevoSenderEmail: Boolean(brevoSenderEmail),
+            recipientType,
+            subject,
+        });
         return false;
     }
 
