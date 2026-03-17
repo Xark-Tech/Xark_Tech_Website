@@ -23,8 +23,7 @@ const SUBMISSION_EMAIL_QUERY = groq`
   *[_type == "submissionEmailSettings" && _id == "submissionEmailSettings"][0]{
     recipientEmail,
     siteAccessRecipientEmail,
-    contactRecipientEmail,
-    careerRecipientEmail
+    contactRecipientEmail
   }
 `;
 
@@ -32,7 +31,6 @@ type SubmissionEmailSettingsRaw = {
     recipientEmail?: string;
     siteAccessRecipientEmail?: string;
     contactRecipientEmail?: string;
-    careerRecipientEmail?: string;
 };
 
 type BrevoAttachment = {
@@ -45,7 +43,8 @@ type BrevoSendOptions = {
     htmlContent: string;
     textContent: string;
     attachment?: BrevoAttachment;
-    recipientType?: 'siteAccess' | 'contact' | 'career';
+    recipientType?: 'siteAccess' | 'contact';
+    recipientEmail?: string;
     replyTo?: {
         email: string;
         name?: string;
@@ -79,7 +78,7 @@ const normalizeEmail = (value?: string) =>
     typeof value === 'string' && value.trim().length > 0 ? value.trim().toLowerCase() : null;
 
 export const getSubmissionRecipientEmail = async (
-    recipientType: 'siteAccess' | 'contact' | 'career' = 'contact',
+    recipientType: 'siteAccess' | 'contact' = 'contact',
 ) => {
     if (!writeToken) {
         return null;
@@ -97,8 +96,6 @@ export const getSubmissionRecipientEmail = async (
 
         if (recipientType === 'siteAccess') {
             resolvedRecipient = normalizeEmail(settings?.siteAccessRecipientEmail) || fallbackRecipient;
-        } else if (recipientType === 'career') {
-            resolvedRecipient = normalizeEmail(settings?.careerRecipientEmail) || fallbackRecipient;
         } else {
             resolvedRecipient = normalizeEmail(settings?.contactRecipientEmail) || fallbackRecipient;
         }
@@ -109,7 +106,6 @@ export const getSubmissionRecipientEmail = async (
             hasFallbackRecipient: Boolean(fallbackRecipient),
             hasSiteAccessRecipient: Boolean(normalizeEmail(settings?.siteAccessRecipientEmail)),
             hasContactRecipient: Boolean(normalizeEmail(settings?.contactRecipientEmail)),
-            hasCareerRecipient: Boolean(normalizeEmail(settings?.careerRecipientEmail)),
         });
 
         return resolvedRecipient;
@@ -125,6 +121,7 @@ export const sendBrevoSubmissionEmail = async ({
     textContent,
     attachment,
     recipientType = 'contact',
+    recipientEmail,
     replyTo,
 }: BrevoSendOptions) => {
     if (!brevoApiKey || !brevoSenderEmail) {
@@ -137,8 +134,8 @@ export const sendBrevoSubmissionEmail = async ({
         return false;
     }
 
-    const recipientEmail = await getSubmissionRecipientEmail(recipientType);
-    if (!recipientEmail) {
+    const resolvedRecipientEmail = normalizeEmail(recipientEmail) || (await getSubmissionRecipientEmail(recipientType));
+    if (!resolvedRecipientEmail) {
         console.error('No submission recipient email resolved', { recipientType, subject });
         return false;
     }
@@ -158,7 +155,7 @@ export const sendBrevoSubmissionEmail = async ({
                 },
                 to: [
                     {
-                        email: recipientEmail,
+                        email: resolvedRecipientEmail,
                     },
                 ],
                 replyTo,
@@ -173,7 +170,7 @@ export const sendBrevoSubmissionEmail = async ({
             const errorBody = await response.text().catch(() => '');
             console.error('Brevo submission email failed', {
                 recipientType,
-                recipientEmail,
+                recipientEmail: resolvedRecipientEmail,
                 subject,
                 status: response.status,
                 body: errorBody,
@@ -183,7 +180,7 @@ export const sendBrevoSubmissionEmail = async ({
         if (response.ok) {
             console.log('Brevo submission email sent', {
                 recipientType,
-                recipientEmail,
+                recipientEmail: resolvedRecipientEmail,
                 subject,
             });
         }
@@ -192,7 +189,7 @@ export const sendBrevoSubmissionEmail = async ({
     } catch (error) {
         console.error('Brevo submission email threw an exception', {
             recipientType,
-            recipientEmail,
+            recipientEmail: resolvedRecipientEmail,
             subject,
             error,
         });

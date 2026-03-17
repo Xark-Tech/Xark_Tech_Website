@@ -1,3 +1,4 @@
+import groq from 'groq';
 import { NextResponse } from 'next/server';
 import {
     sendBrevoSubmissionEmail,
@@ -9,6 +10,11 @@ import {
 
 export const runtime = 'nodejs';
 const MAX_CV_FILE_SIZE = 2 * 1024 * 1024;
+const CAREER_EMAIL_QUERY = groq`
+  *[_type == "career" && _id == $careerId][0]{
+    applicationEmail
+  }
+`;
 
 const isAllowedFileType = (mimeType: string) => {
     const allowedMimeTypes = new Set([
@@ -64,6 +70,23 @@ export async function POST(request: Request) {
             );
         }
 
+        const careerRecord = await writeClient.fetch<{ applicationEmail?: string } | null>(
+            CAREER_EMAIL_QUERY,
+            { careerId },
+            { next: { revalidate: 60 } },
+        );
+        const careerRecipientEmail =
+            typeof careerRecord?.applicationEmail === 'string'
+                ? careerRecord.applicationEmail.trim().toLowerCase()
+                : '';
+
+        if (!careerRecipientEmail) {
+            return NextResponse.json(
+                { message: 'Application email is not configured for this role.' },
+                { status: 400 },
+            );
+        }
+
         const uploadedAsset = await writeClient.assets.upload(
             'file',
             Buffer.from(await cvFile.arrayBuffer()),
@@ -100,7 +123,7 @@ export async function POST(request: Request) {
         const cleanedCareerTitle = careerTitle.trim();
 
         const detailedEmailSent = await sendBrevoSubmissionEmail({
-            recipientType: 'career',
+            recipientEmail: careerRecipientEmail,
             subject: `New Career Application: ${cleanedCareerTitle}`,
             htmlContent: `
                 <div style="font-family: Arial, sans-serif; color: #111827;">
@@ -138,7 +161,7 @@ export async function POST(request: Request) {
 
         if (!detailedEmailSent) {
             await sendBrevoSubmissionEmail({
-                recipientType: 'career',
+                recipientEmail: careerRecipientEmail,
                 subject: `Career Application Fallback: ${cleanedCareerTitle}`,
                 htmlContent: `
                     <div style="font-family: Arial, sans-serif; color: #111827;">

@@ -26,29 +26,20 @@ export const submissionEmailSettingsType = defineType({
       type: "string",
       validation: (Rule) => Rule.email(),
     }),
-    defineField({
-      name: "careerRecipientEmail",
-      title: "Career Form Recipient Email",
-      description: "Career application submissions will be forwarded here.",
-      type: "string",
-      validation: (Rule) => Rule.email(),
-    }),
   ],
   preview: {
     select: {
       fallback: "recipientEmail",
       siteAccess: "siteAccessRecipientEmail",
       contact: "contactRecipientEmail",
-      career: "careerRecipientEmail",
     },
-    prepare({ fallback, siteAccess, contact, career }) {
+    prepare({ fallback, siteAccess, contact }) {
       return {
         title: "Submission Email IDs",
         subtitle:
           [
             siteAccess ? `Popup: ${siteAccess}` : null,
             contact ? `Contact: ${contact}` : null,
-            career ? `Career: ${career}` : null,
             fallback ? `Fallback: ${fallback}` : null,
           ]
             .filter(Boolean)
