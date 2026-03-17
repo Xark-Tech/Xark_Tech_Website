@@ -188,7 +188,7 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
                     </label>
 
                     <label className="site-access-gate__field">
-                        <span>Phone</span>
+                        <span>Phone (Optional)</span>
                         <div className="site-access-gate__phone-row">
                             <div className="site-access-gate__country-select">
                                 <span className="site-access-gate__country-flag" aria-hidden="true">
