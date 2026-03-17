@@ -1,14 +1,38 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import ArrowButton from '../ui/ArrowButton/ArrowButton';
 import './style.scss';
+
+const HERO_VIDEO_SOURCES = {
+    mp4: '/video/xark-final-2.mp4',
+    webm: '/video/xark-final-2.webm',
+} as const;
 
 const Hero = () => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isMuted, setIsMuted] = useState(true);
     const [hasVideoError, setHasVideoError] = useState(false);
+    const [videoSource, setVideoSource] = useState<string | null>(null);
+
+    useEffect(() => {
+        const probe = document.createElement('video');
+        const canPlayMp4 = probe.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
+        const canPlayWebm = probe.canPlayType('video/webm; codecs="vp8, vorbis"');
+
+        if (canPlayMp4) {
+            setVideoSource(HERO_VIDEO_SOURCES.mp4);
+            return;
+        }
+
+        if (canPlayWebm) {
+            setVideoSource(HERO_VIDEO_SOURCES.webm);
+            return;
+        }
+
+        setHasVideoError(true);
+    }, []);
 
     const handleToggleMute = () => {
         setIsMuted((current) => {
@@ -25,10 +49,19 @@ const Hero = () => {
         });
     };
 
+    const handleVideoError = () => {
+        if (videoSource === HERO_VIDEO_SOURCES.mp4) {
+            setVideoSource(HERO_VIDEO_SOURCES.webm);
+            return;
+        }
+
+        setHasVideoError(true);
+    };
+
     return (
         <section className="hero">
             <div className="hero__bg">
-                {hasVideoError ? (
+                {hasVideoError || !videoSource ? (
                     <Image
                         src="/images/hero-image.png"
                         alt="Hero background"
@@ -46,10 +79,15 @@ const Hero = () => {
                         muted={isMuted}
                         playsInline
                         preload="auto"
+                        defaultMuted
                         poster="/images/hero-image.png"
-                        onError={() => setHasVideoError(true)}
+                        disablePictureInPicture
+                        onError={handleVideoError}
                     >
-                        <source src="/video/xark-final-2.webm" type="video/webm" />
+                        <source
+                            src={videoSource}
+                            type={videoSource.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}
+                        />
                     </video>
                 )}
 
