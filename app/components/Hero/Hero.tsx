@@ -63,7 +63,7 @@ const Hero = () => {
             <div className="hero__bg">
                 {hasVideoError || !videoSource ? (
                     <Image
-                        src="/images/hero-image.png"
+                        src="/images/hero-fall-back-image.png"
                         alt="Hero background"
                         fill
                         priority
@@ -80,7 +80,7 @@ const Hero = () => {
                         playsInline
                         preload="auto"
                         defaultMuted
-                        poster="/images/hero-image.png"
+                        poster="/images/hero-fall-back-image.png"
                         disablePictureInPicture
                         onError={handleVideoError}
                     >
