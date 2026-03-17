@@ -93,17 +93,28 @@ export const getSubmissionRecipientEmail = async (
         );
 
         const fallbackRecipient = normalizeEmail(settings?.recipientEmail);
+        let resolvedRecipient: string | null = null;
 
         if (recipientType === 'siteAccess') {
-            return normalizeEmail(settings?.siteAccessRecipientEmail) || fallbackRecipient;
+            resolvedRecipient = normalizeEmail(settings?.siteAccessRecipientEmail) || fallbackRecipient;
+        } else if (recipientType === 'career') {
+            resolvedRecipient = normalizeEmail(settings?.careerRecipientEmail) || fallbackRecipient;
+        } else {
+            resolvedRecipient = normalizeEmail(settings?.contactRecipientEmail) || fallbackRecipient;
         }
 
-        if (recipientType === 'career') {
-            return normalizeEmail(settings?.careerRecipientEmail) || fallbackRecipient;
-        }
+        console.log('Resolved submission recipient email', {
+            recipientType,
+            resolvedRecipient,
+            hasFallbackRecipient: Boolean(fallbackRecipient),
+            hasSiteAccessRecipient: Boolean(normalizeEmail(settings?.siteAccessRecipientEmail)),
+            hasContactRecipient: Boolean(normalizeEmail(settings?.contactRecipientEmail)),
+            hasCareerRecipient: Boolean(normalizeEmail(settings?.careerRecipientEmail)),
+        });
 
-        return normalizeEmail(settings?.contactRecipientEmail) || fallbackRecipient;
+        return resolvedRecipient;
     } catch {
+        console.error('Failed to fetch submission recipient email settings', { recipientType });
         return null;
     }
 };
@@ -122,6 +133,7 @@ export const sendBrevoSubmissionEmail = async ({
 
     const recipientEmail = await getSubmissionRecipientEmail(recipientType);
     if (!recipientEmail) {
+        console.error('No submission recipient email resolved', { recipientType, subject });
         return false;
     }
 
@@ -154,14 +166,30 @@ export const sendBrevoSubmissionEmail = async ({
         if (!response.ok) {
             const errorBody = await response.text().catch(() => '');
             console.error('Brevo submission email failed', {
+                recipientType,
+                recipientEmail,
                 subject,
                 status: response.status,
                 body: errorBody,
             });
         }
 
+        if (response.ok) {
+            console.log('Brevo submission email sent', {
+                recipientType,
+                recipientEmail,
+                subject,
+            });
+        }
+
         return response.ok;
-    } catch {
+    } catch (error) {
+        console.error('Brevo submission email threw an exception', {
+            recipientType,
+            recipientEmail,
+            subject,
+            error,
+        });
         return false;
     }
 };

@@ -59,6 +59,11 @@ const CareerDetailContent: React.FC<CareerDetailContentProps> = ({
     body,
     applicationEmail = 'recruitment@xark.info',
 }) => {
+    const normalizedApplicationEmail =
+        applicationEmail.trim().toLowerCase() === 'engineering@xark.info'
+            ? 'recruitment@xark.info'
+            : applicationEmail.trim();
+
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [shouldRenderForm, setShouldRenderForm] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -298,7 +303,7 @@ const CareerDetailContent: React.FC<CareerDetailContentProps> = ({
                             <p>
                                 Submit your resume through the application form or send it to:
                                 <br />
-                                {applicationEmail}
+                                {normalizedApplicationEmail}
                             </p>
 
                             <div className="career-detail-apply-btn">

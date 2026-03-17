@@ -61,7 +61,7 @@ export const careerType = defineType({
       title: "Application Email",
       type: "string",
       validation: (Rule) => Rule.email(),
-      initialValue: "engineering@xark.info",
+      initialValue: "recruitment@xark.info",
     }),
     defineField({
       name: "isActive",
