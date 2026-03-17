@@ -18,6 +18,7 @@
     position: absolute;
     inset: 0;
     z-index: 0;
+    pointer-events: none;
 }
 
 .hero__video {
@@ -25,6 +26,7 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
+    pointer-events: none;
 }
 
 // ─── Dual Gradient Overlay ────────────────────────────────────────────────────
@@ -34,6 +36,7 @@
     position: absolute;
     inset: 0;
     z-index: 1;
+    pointer-events: none;
     background:
         linear-gradient(181deg, rgba(0, 0, 0, 0.00) 55.66%, rgba(0, 0, 0, 0.75) 95.01%),
         linear-gradient(0deg, rgba(0, 0, 0, 0.00) 44.77%, rgba(0, 0, 0, 0.75) 92.5%);
@@ -55,7 +58,7 @@
     position: absolute;
     right: clamp(1rem, 2.2vw, 2rem);
     bottom: clamp(6rem, 8vw, 7.5rem);
-    z-index: 3;
+    z-index: 20;
     display: inline-flex;
     align-items: center;
     gap: 0.625rem;
@@ -66,6 +69,9 @@
     padding: 0.875rem 1.2rem;
     min-height: 3.5rem;
     cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     backdrop-filter: blur(12px);
     transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 
