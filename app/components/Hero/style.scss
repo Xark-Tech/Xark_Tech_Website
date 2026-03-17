@@ -189,28 +189,30 @@
 // Tablet portrait (≤ 768px)
 @media (max-width: 768px) {
     .hero__inner {
-        padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+        padding-bottom: calc(4rem + env(safe-area-inset-bottom));
     }
 
     .hero__content {
         // padding and gap are handled by Tailwind classes in Hero.tsx
+        gap: 1.75rem;
     }
 
     .hero__text {
-        gap: 12px;
+        gap: 0.625rem;
     }
 
     .hero__title {
-        font-size: 32px;
+        font-size: 1.875rem;
     }
 
     .hero__subtext {
-        font-size: 16px;
+        font-size: 0.9375rem;
+        line-height: 1.35;
         max-width: 100%;
     }
 
     .hero__buttons {
-        gap: 12px;
+        gap: 0.625rem;
     }
 
     .hero__sound-toggle {
@@ -224,25 +226,28 @@
 // Mobile (≤ 480px)
 @media (max-width: 480px) {
     .hero__inner {
-        padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+        padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
     }
 
     .hero__content {
         // padding and gap are handled by Tailwind classes in Hero.tsx
+        gap: 1.25rem;
     }
 
     .hero__title {
-        font-size: 28px;
+        font-size: 1.625rem;
+        line-height: 1.08;
     }
 
     .hero__subtext {
-        font-size: 15px;
+        font-size: 0.875rem;
+        line-height: 1.35;
     }
 
     .hero__buttons {
         flex-direction: column;
         align-items: flex-start;
-        gap: 10px;
+        gap: 0.5rem;
         width: 100%;
     }
 
