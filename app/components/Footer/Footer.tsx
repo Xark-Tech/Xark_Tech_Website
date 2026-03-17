@@ -21,7 +21,21 @@ const socialLinks = [
         href: 'https://www.linkedin.com/company/xark-technologies/',
         icon: '/images/icons/Vector-2.svg',
     },
+    {
+        name: 'X',
+        href: 'https://x.com/XarkTech',
+        icon: null,
+    },
 ];
+
+const XIcon = () => (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+            d="M17.86 3H21l-6.86 7.84L22 21h-6.17l-4.83-6.32L5.47 21H2.33l7.33-8.38L2 3h6.33l4.36 5.76L17.86 3Zm-1.08 16.15h1.74L7.38 4.76H5.51l11.27 14.39Z"
+            fill="currentColor"
+        />
+    </svg>
+);
 
 const Footer = () => {
     return (
@@ -85,7 +99,13 @@ const Footer = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    <Image src={item.icon} alt="" width={20} height={20} aria-hidden="true" />
+                                    {item.icon ? (
+                                        <Image src={item.icon} alt="" width={20} height={20} aria-hidden="true" />
+                                    ) : (
+                                        <span className="footer__social-icon footer__social-icon--x">
+                                            <XIcon />
+                                        </span>
+                                    )}
                                 </a>
                             ))}
                         </div>

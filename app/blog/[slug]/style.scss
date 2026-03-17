@@ -3,24 +3,30 @@
 .blog-detail-page-container-main {
     background: $black;
     padding: 7.75rem 0 0;
+    overflow-x: clip;
 }
 
 .blog-detail-page {
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: clip;
 }
 
 .blog-detail-article {
     margin-top: 2.125rem;
     width: 100%;
     max-width: 79.875rem;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     h1 {
         margin: 0;
+        width: 100%;
         color: $white;
         text-align: center;
         font-family: 'Poppins', sans-serif;
@@ -29,6 +35,8 @@
         font-weight: 600;
         line-height: normal;
         max-width: 62rem;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 }
 
@@ -46,6 +54,8 @@
 .blog-detail-article__content {
     margin-top: 0.875rem;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     color: $white;
     font-family: $font-aeonik;
     font-size: 1rem;
@@ -55,6 +65,8 @@
 
     p {
         margin: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     p+p {
@@ -93,6 +105,8 @@
 
     li {
         margin: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 }
 
@@ -190,7 +204,7 @@
     }
 
     .blog-detail-page {
-        padding: 0 1rem;
+        padding: 0;
     }
 
     .blog-detail-article {
@@ -255,6 +269,7 @@
 }
 
 .blog-detail-categories-section {
+    width: 100%;
     max-width: 50rem;
     margin: 4rem auto 0;
     padding-top: 3rem;

@@ -9,12 +9,15 @@ const HERO_VIDEO_SOURCES = {
     mp4: '/video/xark-final-2.mp4',
     webm: '/video/xark-final-2.webm',
 } as const;
+const HERO_COPY_HIDE_START = 26.5;
+const HERO_COPY_HIDE_END = 31;
 
 const Hero = () => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isMuted, setIsMuted] = useState(true);
     const [hasVideoError, setHasVideoError] = useState(false);
     const [videoSource, setVideoSource] = useState<string | null>(null);
+    const [isHeroCopyHidden, setIsHeroCopyHidden] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -64,6 +67,12 @@ const Hero = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (hasVideoError || !videoSource) {
+            setIsHeroCopyHidden(false);
+        }
+    }, [hasVideoError, videoSource]);
+
     const handleToggleMute = () => {
         setIsMuted((current) => {
             const nextMuted = !current;
@@ -86,6 +95,26 @@ const Hero = () => {
         }
 
         setHasVideoError(true);
+    };
+
+    const syncHeroCopyVisibility = () => {
+        const video = videoRef.current;
+
+        if (!video) {
+            setIsHeroCopyHidden(false);
+            return;
+        }
+
+        const currentTime = video.currentTime || 0;
+        const hideEndTime =
+            Number.isFinite(video.duration) && video.duration > 0
+                ? Math.min(HERO_COPY_HIDE_END, video.duration)
+                : HERO_COPY_HIDE_END;
+        const shouldHideCopy =
+            currentTime >= HERO_COPY_HIDE_START &&
+            currentTime < hideEndTime;
+
+        setIsHeroCopyHidden(shouldHideCopy);
     };
 
     return (
@@ -113,6 +142,9 @@ const Hero = () => {
                         defaultMuted
                         poster="/images/hero-fall-back-image.png"
                         disablePictureInPicture
+                        onTimeUpdate={syncHeroCopyVisibility}
+                        onLoadedMetadata={syncHeroCopyVisibility}
+                        onSeeked={syncHeroCopyVisibility}
                         onError={handleVideoError}
                     >
                         <source
@@ -128,13 +160,15 @@ const Hero = () => {
             <div className="hero__inner container h-full w-full relative z-10 flex items-end">
                 <div className="hero__content w-full flex flex-col xl:flex-row xl:items-end justify-between gap-10">
                     <div className="hero__text">
-                        <h1 className="hero__title">
-                            GaN RF design for radar, SatCom, and telecom infrastructure.
-                        </h1>
-                        <p className="hero__subtext">
-                            From MMICs to phased arrays-engineered for performance, scalability, and
-                            reliability.
-                        </p>
+                        <div className={`hero__copy${isHeroCopyHidden ? ' hero__copy--hidden' : ''}`}>
+                            <h1 className="hero__title">
+                                GaN RF design for radar, SatCom, and telecom infrastructure.
+                            </h1>
+                            <p className="hero__subtext">
+                                From MMICs to phased arrays-engineered for performance, scalability, and
+                                reliability.
+                            </p>
+                        </div>
                     </div>
 
                     <div className="hero__buttons">

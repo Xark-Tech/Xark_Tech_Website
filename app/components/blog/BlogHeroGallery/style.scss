@@ -4,6 +4,7 @@
     position: relative;
     width: 100%;
     max-width: 96rem;
+    min-width: 0;
     min-height: 34rem;
     border-radius: 2.125rem;
     overflow: hidden;
@@ -16,6 +17,7 @@
 .blog-detail-hero-media__frame {
     position: relative;
     width: 100%;
+    max-width: 100%;
     min-height: 34rem;
     padding: 2.75rem 2.75rem 5.25rem;
     border: 0;
@@ -203,6 +205,7 @@
 
 @media (max-width: 48rem) {
     .blog-detail-hero-media {
+        max-width: 100%;
         border-radius: 1rem;
     }
 

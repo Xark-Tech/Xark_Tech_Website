@@ -118,6 +118,25 @@
     gap: 16px;
 }
 
+.hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition:
+        opacity 0.55s ease,
+        transform 0.55s ease,
+        filter 0.55s ease;
+}
+
+.hero__copy--hidden {
+    opacity: 0;
+    transform: translateY(1rem);
+    filter: blur(0.5rem);
+}
+
 .hero__title {
     font-family: $font-aeonik;
     font-size: 54px;
@@ -201,6 +220,10 @@
         gap: 0.625rem;
     }
 
+    .hero__copy {
+        gap: 0.625rem;
+    }
+
     .hero__title {
         font-size: 1.875rem;
     }
@@ -242,6 +265,10 @@
     .hero__subtext {
         font-size: 0.875rem;
         line-height: 1.35;
+    }
+
+    .hero__copy {
+        gap: 0.5rem;
     }
 
     .hero__buttons {

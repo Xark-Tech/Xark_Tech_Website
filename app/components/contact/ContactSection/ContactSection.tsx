@@ -32,6 +32,11 @@ const socialLinks = [
         href: 'https://www.linkedin.com/company/xark-technologies/',
         modifier: 'linkedin',
     },
+    {
+        name: 'X',
+        href: 'https://x.com/XarkTech',
+        modifier: 'x',
+    },
 ];
 
 const EmailIcon = () => (
@@ -43,6 +48,15 @@ const EmailIcon = () => (
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="1.5"
+        />
+    </svg>
+);
+
+const XSocialIcon = () => (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+            d="M17.86 3H21l-6.86 7.84L22 21h-6.17l-4.83-6.32L5.47 21H2.33l7.33-8.38L2 3h6.33l4.36 5.76L17.86 3Zm-1.08 16.15h1.74L7.38 4.76H5.51l11.27 14.39Z"
+            fill="currentColor"
         />
     </svg>
 );
@@ -195,10 +209,16 @@ const ContactSection = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                <span
-                                    className={`social-link__icon social-link__icon--${item.modifier}`}
-                                    aria-hidden="true"
-                                />
+                                {item.modifier === 'x' ? (
+                                    <span className="social-link__svg social-link__svg--x">
+                                        <XSocialIcon />
+                                    </span>
+                                ) : (
+                                    <span
+                                        className={`social-link__icon social-link__icon--${item.modifier}`}
+                                        aria-hidden="true"
+                                    />
+                                )}
                             </a>
                         ))}
                     </div>
