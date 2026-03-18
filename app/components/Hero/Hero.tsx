@@ -105,6 +105,11 @@ const Hero = () => {
             return;
         }
 
+        if (window.innerWidth <= 768) {
+            setIsHeroCopyHidden(false);
+            return;
+        }
+
         const currentTime = video.currentTime || 0;
         const hideEndTime =
             Number.isFinite(video.duration) && video.duration > 0

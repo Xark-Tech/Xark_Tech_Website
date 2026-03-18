@@ -111,8 +111,8 @@ const PagePreloader = () => {
                     <Image
                         src="/images/xark-green.png"
                         alt=""
-                        width={260}
-                        height={78}
+                        width={381}
+                        height={69}
                         priority
                         aria-hidden="true"
                     />
@@ -121,8 +121,8 @@ const PagePreloader = () => {
                     <Image
                         src="/images/xark-green.png"
                         alt=""
-                        width={260}
-                        height={78}
+                        width={381}
+                        height={69}
                         priority
                         aria-hidden="true"
                     />

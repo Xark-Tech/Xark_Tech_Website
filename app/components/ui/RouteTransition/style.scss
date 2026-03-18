@@ -16,6 +16,7 @@
 .route-transition-logo-wrap {
     position: relative;
     width: min(15rem, 58vw);
+    overflow: hidden;
 }
 
 .route-transition-logo {
@@ -37,8 +38,9 @@
 
 .route-transition-logo--sweep {
     position: absolute;
-    inset: 0;
+    inset: -0.0625rem;
     filter: drop-shadow(0 0 0.9rem rgba(147, 213, 10, 0.36));
+    will-change: clip-path;
 }
 
 .route-transition-content {
@@ -50,4 +52,3 @@
         width: min(13rem, 66vw);
     }
 }
-

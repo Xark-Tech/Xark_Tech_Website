@@ -14,6 +14,7 @@
 .page-preloader__logo-wrap {
     position: relative;
     width: min(16.25rem, 62vw);
+    overflow: hidden;
 }
 
 .page-preloader__logo {
@@ -35,8 +36,9 @@
 
 .page-preloader__logo--sweep {
     position: absolute;
-    inset: 0;
+    inset: -0.0625rem;
     filter: drop-shadow(0 0 0.95rem rgba(147, 213, 10, 0.3));
+    will-change: clip-path;
 }
 
 @media (max-width: 40rem) {

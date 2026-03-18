@@ -97,10 +97,10 @@ const RouteTransition = ({ children }: RouteTransitionProps) => {
             <div className="route-transition-overlay" ref={overlayRef} aria-hidden="true">
                 <div className="route-transition-logo-wrap" ref={logoWrapRef}>
                     <div className="route-transition-logo route-transition-logo--base">
-                        <Image src="/images/xark-green.png" alt="" width={240} height={72} priority aria-hidden="true" />
+                        <Image src="/images/xark-green.png" alt="" width={381} height={69} priority aria-hidden="true" />
                     </div>
                     <div className="route-transition-logo route-transition-logo--sweep" ref={logoSweepRef}>
-                        <Image src="/images/xark-green.png" alt="" width={240} height={72} priority aria-hidden="true" />
+                        <Image src="/images/xark-green.png" alt="" width={381} height={69} priority aria-hidden="true" />
                     </div>
                 </div>
             </div>
