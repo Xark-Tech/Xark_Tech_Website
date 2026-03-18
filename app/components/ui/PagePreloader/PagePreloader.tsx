@@ -31,10 +31,10 @@ const PagePreloader = () => {
         document.body.style.overflow = 'hidden';
         gsap.set(root, { autoAlpha: 1 });
         gsap.set(logoWrap, { autoAlpha: 1, scale: 1 });
-        gsap.set(sweep, { clipPath: 'inset(0 100% 0 0)' });
+        gsap.set(sweep, { clipPath: 'inset(0 101% 0 0)' });
 
         const sweepTween = gsap.to(sweep, {
-            clipPath: 'inset(0 0% 0 0)',
+            clipPath: 'inset(0 -1% 0 0)',
             duration: 1.25,
             ease: 'power2.inOut',
             repeat: -1,

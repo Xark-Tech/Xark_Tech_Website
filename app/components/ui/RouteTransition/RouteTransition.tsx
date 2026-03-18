@@ -62,13 +62,13 @@ const RouteTransition = ({ children }: RouteTransitionProps) => {
             )
             .fromTo(
                 logoSweep,
-                { clipPath: 'inset(0 100% 0 0)' },
-                { clipPath: 'inset(0 0% 0 0)', duration: 0.45, ease: 'power2.inOut' },
+                { clipPath: 'inset(0 101% 0 0)' },
+                { clipPath: 'inset(0 -1% 0 0)', duration: 0.45, ease: 'power2.inOut' },
                 0.08
             )
             .to(
                 logoSweep,
-                { clipPath: 'inset(0 0 0 100%)', duration: 0.4, ease: 'power2.inOut' },
+                { clipPath: 'inset(0 0 0 101%)', duration: 0.4, ease: 'power2.inOut' },
                 0.56
             )
             .to(
@@ -112,4 +112,3 @@ const RouteTransition = ({ children }: RouteTransitionProps) => {
 };
 
 export default RouteTransition;
-
