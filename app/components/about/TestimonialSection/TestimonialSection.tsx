@@ -98,22 +98,6 @@ const TestimonialSection = ({ testimonials = [] }: TestimonialSectionProps) => {
                         onTouchStart={() => setIsPaused(true)}
                         onTouchEnd={() => setIsPaused(false)}
                     >
-                        <button
-                            type="button"
-                            className="testimonial-arrow testimonial-arrow--left"
-                            onClick={handlePrev}
-                            aria-label="Previous testimonial"
-                            disabled={testimonials.length <= 1}
-                        >
-                            <Image
-                                src="/images/icons/green-left-arrow.png"
-                                alt=""
-                                width={21}
-                                height={40}
-                                aria-hidden="true"
-                            />
-                        </button>
-
                         <article className="testimonial-card" key={`${active.id}-${activeIndex}`}>
                             <Image
                                 src="/images/icons/quote-green.png"
@@ -135,21 +119,39 @@ const TestimonialSection = ({ testimonials = [] }: TestimonialSectionProps) => {
                             </div>
                         </article>
 
-                        <button
-                            type="button"
-                            className="testimonial-arrow testimonial-arrow--right"
-                            onClick={handleNext}
-                            aria-label="Next testimonial"
-                            disabled={testimonials.length <= 1}
-                        >
-                            <Image
-                                src="/images/icons/green-left-arrow.png"
-                                alt=""
-                                width={21}
-                                height={40}
-                                aria-hidden="true"
-                            />
-                        </button>
+                        <div className="testimonial-controls">
+                            <button
+                                type="button"
+                                className="testimonial-arrow testimonial-arrow--left"
+                                onClick={handlePrev}
+                                aria-label="Previous testimonial"
+                                disabled={testimonials.length <= 1}
+                            >
+                                <Image
+                                    src="/images/icons/green-left-arrow.png"
+                                    alt=""
+                                    width={21}
+                                    height={40}
+                                    aria-hidden="true"
+                                />
+                            </button>
+
+                            <button
+                                type="button"
+                                className="testimonial-arrow testimonial-arrow--right"
+                                onClick={handleNext}
+                                aria-label="Next testimonial"
+                                disabled={testimonials.length <= 1}
+                            >
+                                <Image
+                                    src="/images/icons/green-left-arrow.png"
+                                    alt=""
+                                    width={21}
+                                    height={40}
+                                    aria-hidden="true"
+                                />
+                            </button>
+                        </div>
                     </div>
                 ) : (
                     <div className="testimonial-empty-state" role="status" aria-live="polite">

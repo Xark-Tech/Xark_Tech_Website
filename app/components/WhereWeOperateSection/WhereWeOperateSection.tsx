@@ -20,7 +20,7 @@ const WhereWeOperateSection: React.FC<WhereWeOperateSectionProps> = ({ items }) 
     const hasItems = displayItems.length > 0;
 
     return (
-        <section className="where-we-operate-section bg-black py-[80px] md:py-[120px]">
+        <section className="where-we-operate-section bg-black py-[56px] md:py-[104px]">
             <div className="container">
 
                 <SectionHeader

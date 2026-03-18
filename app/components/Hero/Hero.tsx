@@ -155,6 +155,41 @@ const Hero = () => {
                 )}
 
                 <div className="hero__gradient" />
+
+                <button
+                    type="button"
+                    className="hero__sound-toggle"
+                    onClick={handleToggleMute}
+                    aria-pressed={!isMuted}
+                    aria-label={isMuted ? 'Unmute hero video' : 'Mute hero video'}
+                >
+                    <span className="hero__sound-toggle-icon" aria-hidden="true">
+                        {isMuted ? (
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path
+                                    d="M5 10h3l4-4v12l-4-4H5zM16 9l5 5M21 9l-5 5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="1.8"
+                                />
+                            </svg>
+                        ) : (
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path
+                                    d="M5 10h3l4-4v12l-4-4H5zM16 9.5a4.5 4.5 0 0 1 0 5M18.8 7a8 8 0 0 1 0 10"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="1.8"
+                                />
+                            </svg>
+                        )}
+                    </span>
+                    <span className="hero__sound-toggle-label">{isMuted ? 'Muted' : 'Sound On'}</span>
+                </button>
             </div>
 
             <div className="hero__inner container h-full w-full relative z-10 flex items-end">
@@ -178,40 +213,6 @@ const Hero = () => {
                 </div>
             </div>
 
-            <button
-                type="button"
-                className="hero__sound-toggle"
-                onClick={handleToggleMute}
-                aria-pressed={!isMuted}
-                aria-label={isMuted ? 'Unmute hero video' : 'Mute hero video'}
-            >
-                <span className="hero__sound-toggle-icon" aria-hidden="true">
-                    {isMuted ? (
-                        <svg viewBox="0 0 24 24" focusable="false">
-                            <path
-                                d="M5 10h3l4-4v12l-4-4H5zM16 9l5 5M21 9l-5 5"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1.8"
-                            />
-                        </svg>
-                    ) : (
-                        <svg viewBox="0 0 24 24" focusable="false">
-                            <path
-                                d="M5 10h3l4-4v12l-4-4H5zM16 9.5a4.5 4.5 0 0 1 0 5M18.8 7a8 8 0 0 1 0 10"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1.8"
-                            />
-                        </svg>
-                    )}
-                </span>
-                <span className="hero__sound-toggle-label">{isMuted ? 'Muted' : 'Sound On'}</span>
-            </button>
         </section>
     );
 };

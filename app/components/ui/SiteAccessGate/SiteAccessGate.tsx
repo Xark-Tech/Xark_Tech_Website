@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-    hasRecentSiteAccessGrant,
-    SITE_ACCESS_STORAGE_KEY,
+    getRecentSiteAccessClientGrantTimestamp,
+    persistSiteAccessClientGrant,
 } from '@/lib/siteAccess';
 import './style.scss';
 
@@ -51,13 +51,11 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
             return;
         }
 
-        const rawValue = window.localStorage.getItem(SITE_ACCESS_STORAGE_KEY);
-        if (!hasRecentSiteAccessGrant(rawValue)) {
-            window.localStorage.removeItem(SITE_ACCESS_STORAGE_KEY);
-            return;
+        const recentGrantTimestamp = getRecentSiteAccessClientGrantTimestamp();
+        if (recentGrantTimestamp) {
+            persistSiteAccessClientGrant(recentGrantTimestamp);
+            setIsLocked(false);
         }
-
-        setIsLocked(false);
     }, [initialHasRecentSiteAccess]);
 
     useEffect(() => {
@@ -127,7 +125,7 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
                 return;
             }
 
-            window.localStorage.setItem(SITE_ACCESS_STORAGE_KEY, String(Date.now()));
+            persistSiteAccessClientGrant(Date.now());
             setValues({ ...initialValues });
             setIsClosing(true);
             closeTimerRef.current = window.setTimeout(() => {

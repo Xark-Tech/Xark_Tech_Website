@@ -25,10 +25,18 @@
 
 .testimonial-slider {
     margin-top: 4.125rem;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    position: relative;
+    padding: 0 5.5rem;
+}
+
+.testimonial-controls {
+    position: absolute;
+    inset: 50% 0 auto;
+    transform: translateY(-50%);
+    display: flex;
     align-items: center;
-    column-gap: 3.5rem;
+    justify-content: space-between;
+    pointer-events: none;
 }
 
 .testimonial-arrow {
@@ -42,6 +50,7 @@
     justify-content: center;
     cursor: pointer;
     transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: auto;
 
     &:hover {
         opacity: 0.86;
@@ -130,7 +139,7 @@
 
 @media (max-width: 90rem) {
     .testimonial-slider {
-        column-gap: 2rem;
+        padding: 0 3.5rem;
     }
 
     .testimonial-card {
@@ -168,12 +177,10 @@
 
     .testimonial-slider {
         margin-top: 2.75rem;
-        grid-template-columns: 1fr;
-        row-gap: 1.5rem;
+        padding: 0;
     }
 
     .testimonial-card {
-        order: 1;
         min-height: auto;
     }
 
@@ -205,21 +212,22 @@
         height: 2.25rem;
     }
 
+    .testimonial-controls {
+        position: static;
+        inset: auto;
+        transform: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 0.5rem;
+        pointer-events: auto;
+    }
+
     .testimonial-empty-state {
         margin-top: 2.75rem;
         padding: 2rem 1.75rem;
         font-size: 1.2rem;
-    }
-
-    .testimonial-arrow--left {
-        order: 2;
-        justify-self: start;
-    }
-
-    .testimonial-arrow--right {
-        order: 3;
-        justify-self: end;
-        margin-top: -2.25rem;
     }
 }
 
