@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import ArrowButton from '../ui/ArrowButton/ArrowButton';
+import { hasRecentSiteAccessClientGrant } from '@/lib/siteAccess';
 import './style.scss';
 
 const HERO_VIDEO_SOURCES = {
@@ -13,11 +14,14 @@ const HERO_COPY_HIDE_START = 26.5;
 const HERO_COPY_HIDE_END = 31;
 
 const Hero = () => {
+    const heroRef = useRef<HTMLElement | null>(null);
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isMuted, setIsMuted] = useState(true);
     const [hasVideoError, setHasVideoError] = useState(false);
     const [videoSource, setVideoSource] = useState<string | null>(null);
     const [isHeroCopyHidden, setIsHeroCopyHidden] = useState(false);
+    const [hasSiteAccess, setHasSiteAccess] = useState(false);
+    const [isHeroInView, setIsHeroInView] = useState(true);
 
     useEffect(() => {
         let isMounted = true;
@@ -68,10 +72,64 @@ const Hero = () => {
     }, []);
 
     useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        const syncSiteAccess = () => {
+            setHasSiteAccess(hasRecentSiteAccessClientGrant());
+        };
+
+        syncSiteAccess();
+        window.addEventListener('xark:site-access-granted', syncSiteAccess);
+
+        return () => {
+            window.removeEventListener('xark:site-access-granted', syncSiteAccess);
+        };
+    }, []);
+
+    useEffect(() => {
+        const hero = heroRef.current;
+        if (!hero || typeof IntersectionObserver === 'undefined') {
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsHeroInView(entry.isIntersecting && entry.intersectionRatio > 0.28);
+            },
+            {
+                threshold: [0, 0.28, 0.45],
+            },
+        );
+
+        observer.observe(hero);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
+    useEffect(() => {
         if (hasVideoError || !videoSource) {
             setIsHeroCopyHidden(false);
         }
     }, [hasVideoError, videoSource]);
+
+    useEffect(() => {
+        const video = videoRef.current;
+
+        if (!video || hasVideoError || !videoSource) {
+            return;
+        }
+
+        if (!hasSiteAccess || !isHeroInView) {
+            video.pause();
+            return;
+        }
+
+        video.play().catch(() => {});
+    }, [hasSiteAccess, hasVideoError, isHeroInView, videoSource]);
 
     const handleToggleMute = () => {
         setIsMuted((current) => {
@@ -123,7 +181,7 @@ const Hero = () => {
     };
 
     return (
-        <section className="hero">
+        <section className="hero" ref={heroRef}>
             <div className="hero__bg">
                 {hasVideoError || !videoSource ? (
                     <Image
@@ -139,7 +197,6 @@ const Hero = () => {
                         key={videoSource}
                         ref={videoRef}
                         className="hero__video"
-                        autoPlay
                         loop
                         muted={isMuted}
                         playsInline

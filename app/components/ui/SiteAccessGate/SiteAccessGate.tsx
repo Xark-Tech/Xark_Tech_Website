@@ -34,6 +34,10 @@ const initialValues: GateValues = {
     phoneNumber: '',
 };
 
+const dispatchSiteAccessGranted = () => {
+    window.dispatchEvent(new CustomEvent('xark:site-access-granted'));
+};
+
 type SiteAccessGateProps = {
     initialHasRecentSiteAccess: boolean;
 };
@@ -47,7 +51,12 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
     const closeTimerRef = useRef<number | null>(null);
 
     useEffect(() => {
-        if (initialHasRecentSiteAccess || typeof window === 'undefined') {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        if (initialHasRecentSiteAccess) {
+            dispatchSiteAccessGranted();
             return;
         }
 
@@ -55,6 +64,7 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
         if (recentGrantTimestamp) {
             persistSiteAccessClientGrant(recentGrantTimestamp);
             setIsLocked(false);
+            dispatchSiteAccessGranted();
         }
     }, [initialHasRecentSiteAccess]);
 
@@ -131,6 +141,7 @@ const SiteAccessGate = ({ initialHasRecentSiteAccess }: SiteAccessGateProps) => 
             closeTimerRef.current = window.setTimeout(() => {
                 setIsClosing(false);
                 setIsLocked(false);
+                dispatchSiteAccessGranted();
             }, CLOSE_ANIMATION_MS);
         } catch {
             setSubmitError('Unable to continue right now.');
