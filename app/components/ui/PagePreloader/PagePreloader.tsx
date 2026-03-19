@@ -12,15 +12,15 @@ const PagePreloader = () => {
     const [isVisible, setIsVisible] = useState(true);
     const rootRef = useRef<HTMLDivElement | null>(null);
     const logoWrapRef = useRef<HTMLDivElement | null>(null);
-    const sweepRef = useRef<HTMLDivElement | null>(null);
+    const sweepClipRef = useRef<HTMLDivElement | null>(null);
     const shouldRender = typeof window === 'undefined' || isVisible;
 
     useEffect(() => {
         const root = rootRef.current;
         const logoWrap = logoWrapRef.current;
-        const sweep = sweepRef.current;
+        const sweepClip = sweepClipRef.current;
 
-        if (!root || !logoWrap || !sweep) {
+        if (!root || !logoWrap || !sweepClip) {
             return;
         }
 
@@ -31,10 +31,10 @@ const PagePreloader = () => {
         document.body.style.overflow = 'hidden';
         gsap.set(root, { autoAlpha: 1 });
         gsap.set(logoWrap, { autoAlpha: 1, scale: 1 });
-        gsap.set(sweep, { clipPath: 'inset(0 101% 0 0)' });
+        gsap.set(sweepClip, { width: 0 });
 
-        const sweepTween = gsap.to(sweep, {
-            clipPath: 'inset(0 -1% 0 0)',
+        const sweepTween = gsap.to(sweepClip, {
+            width: '104%',
             duration: 1.25,
             ease: 'power2.inOut',
             repeat: -1,
@@ -117,15 +117,17 @@ const PagePreloader = () => {
                         aria-hidden="true"
                     />
                 </div>
-                <div className="page-preloader__logo page-preloader__logo--sweep" ref={sweepRef}>
-                    <Image
-                        src="/images/xark-green.png"
-                        alt=""
-                        width={381}
-                        height={69}
-                        priority
-                        aria-hidden="true"
-                    />
+                <div className="page-preloader__logo-sweep-clip" ref={sweepClipRef}>
+                    <div className="page-preloader__logo page-preloader__logo--sweep">
+                        <Image
+                            src="/images/xark-green.png"
+                            alt=""
+                            width={381}
+                            height={69}
+                            priority
+                            aria-hidden="true"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

@@ -15,22 +15,22 @@ const RouteTransition = ({ children }: RouteTransitionProps) => {
     const isFirstRenderRef = useRef(true);
     const overlayRef = useRef<HTMLDivElement | null>(null);
     const logoWrapRef = useRef<HTMLDivElement | null>(null);
-    const logoSweepRef = useRef<HTMLDivElement | null>(null);
+    const logoSweepClipRef = useRef<HTMLDivElement | null>(null);
     const contentRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const overlay = overlayRef.current;
         const logoWrap = logoWrapRef.current;
-        const logoSweep = logoSweepRef.current;
+        const logoSweepClip = logoSweepClipRef.current;
         const content = contentRef.current;
 
-        if (!overlay || !logoWrap || !logoSweep || !content) {
+        if (!overlay || !logoWrap || !logoSweepClip || !content) {
             return;
         }
 
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        gsap.killTweensOf([overlay, logoWrap, logoSweep, content]);
+        gsap.killTweensOf([overlay, logoWrap, logoSweepClip, content]);
 
         if (isFirstRenderRef.current) {
             isFirstRenderRef.current = false;
@@ -61,14 +61,14 @@ const RouteTransition = ({ children }: RouteTransitionProps) => {
                 0.04
             )
             .fromTo(
-                logoSweep,
-                { clipPath: 'inset(0 101% 0 0)' },
-                { clipPath: 'inset(0 -1% 0 0)', duration: 0.45, ease: 'power2.inOut' },
+                logoSweepClip,
+                { width: 0, xPercent: 0 },
+                { width: '104%', duration: 0.45, ease: 'power2.inOut' },
                 0.08
             )
             .to(
-                logoSweep,
-                { clipPath: 'inset(0 0 0 101%)', duration: 0.4, ease: 'power2.inOut' },
+                logoSweepClip,
+                { width: 0, xPercent: 100, duration: 0.4, ease: 'power2.inOut' },
                 0.56
             )
             .to(
@@ -99,8 +99,10 @@ const RouteTransition = ({ children }: RouteTransitionProps) => {
                     <div className="route-transition-logo route-transition-logo--base">
                         <Image src="/images/xark-green.png" alt="" width={381} height={69} priority aria-hidden="true" />
                     </div>
-                    <div className="route-transition-logo route-transition-logo--sweep" ref={logoSweepRef}>
-                        <Image src="/images/xark-green.png" alt="" width={381} height={69} priority aria-hidden="true" />
+                    <div className="route-transition-logo-sweep-clip" ref={logoSweepClipRef}>
+                        <div className="route-transition-logo route-transition-logo--sweep">
+                            <Image src="/images/xark-green.png" alt="" width={381} height={69} priority aria-hidden="true" />
+                        </div>
                     </div>
                 </div>
             </div>
