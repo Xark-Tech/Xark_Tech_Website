@@ -5,7 +5,7 @@ import './style.scss';
 
 const AboutSection = () => {
     return (
-        <section className="about-section py-[56px] md:py-[104px] bg-black">
+        <section className="about-section pt-[24px] pb-[44px] md:py-[104px] bg-black">
             <div className="container">
                 <div className="about-content grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-[100px] items-center">
 

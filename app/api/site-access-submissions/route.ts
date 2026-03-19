@@ -7,8 +7,8 @@ import {
     writeToken,
 } from '@/lib/submissionNotifications';
 import {
-    SITE_ACCESS_COOKIE_MAX_AGE,
     SITE_ACCESS_STORAGE_KEY,
+    getServerSiteAccessCookieOptions,
 } from '@/lib/siteAccess';
 
 export const runtime = 'nodejs';
@@ -83,13 +83,11 @@ export async function POST(request: Request) {
         });
 
         const response = NextResponse.json({ message: 'Access granted.' }, { status: 201 });
-        response.cookies.set(SITE_ACCESS_STORAGE_KEY, String(grantedAt), {
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: process.env.NODE_ENV === 'production',
-            path: '/',
-            maxAge: SITE_ACCESS_COOKIE_MAX_AGE,
-        });
+        response.cookies.set(
+            SITE_ACCESS_STORAGE_KEY,
+            String(grantedAt),
+            getServerSiteAccessCookieOptions(request.headers.get('host')),
+        );
 
         return response;
     } catch {

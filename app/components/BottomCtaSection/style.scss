@@ -107,7 +107,7 @@
 
 @media (max-width: 48rem) {
     .bottom-cta-section {
-        padding: 3.5rem 0;
+        padding: 3rem 0;
     }
 
     .bottom-cta-card {
@@ -121,6 +121,15 @@
 
     .bottom-cta-card__content {
         padding: 2.25rem 1.25rem 1.5rem;
+    }
+
+    .bottom-cta-card .section-header-action__left {
+        width: 100%;
+    }
+
+    .bottom-cta-card .section-header-action__label {
+        margin-left: auto;
+        margin-bottom: 1.5rem;
     }
 
     .bottom-cta-card .section-header-action__title {

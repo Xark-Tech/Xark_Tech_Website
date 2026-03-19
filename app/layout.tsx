@@ -5,7 +5,7 @@ import LayoutChrome from "./components/LayoutChrome/LayoutChrome";
 import { hasRecentSiteAccessGrant, SITE_ACCESS_STORAGE_KEY } from "@/lib/siteAccess";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://xark.info"),
+  metadataBase: new URL("https://xarktechnologies.com"),
   title: {
     default: "XARK Technologies | RF MMICs, Front-End Modules & Antenna Systems",
     template: "%s | XARK Technologies",
@@ -24,16 +24,19 @@ export const metadata: Metadata = {
     "wireless infrastructure",
   ],
   icons: {
-    icon: [{ url: "/xark-favicon.png", type: "image/png" }],
-    shortcut: "/xark-favicon.png",
-    apple: "/xark-favicon.png",
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "399x399" },
+      { url: "/xark-favicon.png", type: "image/png", sizes: "399x399" },
+    ],
+    shortcut: "/icon.png",
+    apple: [{ url: "/apple-icon.png", sizes: "399x399", type: "image/png" }],
   },
   openGraph: {
     type: "website",
     title: "XARK Technologies | RF MMICs, Front-End Modules & Antenna Systems",
     description:
       "Engineered RF products and subsystems for performance-critical radar, SatCom, telecom, and wireless applications.",
-    url: "https://xark.info",
+    url: "https://xarktechnologies.com",
     siteName: "XARK Technologies",
     images: [
       {

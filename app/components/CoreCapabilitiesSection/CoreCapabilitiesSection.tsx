@@ -5,7 +5,7 @@ import './style.scss';
 
 const CoreCapabilitiesSection = () => {
     return (
-        <section className="capabilities-section bg-black py-[56px] md:py-[104px]">
+        <section className="capabilities-section bg-black py-[44px] md:py-[104px]">
             <div className="container">
 
                 {/* Reusable Section Header */}

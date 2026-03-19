@@ -83,7 +83,7 @@ const BrandsSection: React.FC<BrandsSectionProps> = ({ logos = [] }) => {
     }, []);
 
     return (
-        <section className="brands-section bg-black py-[56px] md:py-[104px]">
+        <section className="brands-section bg-black py-[44px] md:py-[104px]">
             <div className="container">
                 <SectionHeader
                     label="Clients"

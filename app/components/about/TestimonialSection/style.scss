@@ -178,14 +178,23 @@
     .testimonial-slider {
         margin-top: 2.75rem;
         padding: 0;
+        display: grid;
+        grid-template-columns: 2.25rem minmax(0, 1fr) 2.25rem;
+        align-items: center;
+        column-gap: 0.875rem;
     }
 
     .testimonial-card {
         min-height: auto;
+        grid-column: 2;
+        text-align: center;
+        align-items: center;
     }
 
     .testimonial-card__quote-icon {
         width: 3.375rem;
+        margin-left: auto;
+        margin-right: auto;
         margin-bottom: 1.5rem;
     }
 
@@ -197,6 +206,7 @@
 
     .testimonial-card__author {
         margin-top: 2rem;
+        width: 100%;
 
         h6 {
             font-size: 1.25rem;
@@ -213,15 +223,21 @@
     }
 
     .testimonial-controls {
+        display: contents;
         position: static;
         inset: auto;
         transform: none;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        margin-top: 0.5rem;
         pointer-events: auto;
+    }
+
+    .testimonial-arrow--left {
+        grid-column: 1;
+        justify-self: center;
+    }
+
+    .testimonial-arrow--right {
+        grid-column: 3;
+        justify-self: center;
     }
 
     .testimonial-empty-state {
