@@ -12,48 +12,35 @@ const PagePreloader = () => {
     const [isVisible, setIsVisible] = useState(true);
     const rootRef = useRef<HTMLDivElement | null>(null);
     const logoWrapRef = useRef<HTMLDivElement | null>(null);
-    const sweepClipRef = useRef<HTMLDivElement | null>(null);
+    const sweepRef = useRef<HTMLDivElement | null>(null);
     const shouldRender = typeof window === 'undefined' || isVisible;
 
     useEffect(() => {
         const root = rootRef.current;
         const logoWrap = logoWrapRef.current;
-        const sweepClip = sweepClipRef.current;
+        const sweep = sweepRef.current;
 
-        if (!root || !logoWrap || !sweepClip) {
+        if (!root || !logoWrap || !sweep) {
             return;
         }
 
         const startAt = performance.now();
         let hasClosed = false;
+        let isPageReady = false;
+        let isSweepComplete = false;
         let safetyTimer: ReturnType<typeof setTimeout> | null = null;
+        let closeDelayCall: gsap.core.Tween | null = null;
 
         document.body.style.overflow = 'hidden';
         gsap.set(root, { autoAlpha: 1 });
         gsap.set(logoWrap, { autoAlpha: 1, scale: 1 });
-        gsap.set(sweepClip, { width: 0 });
-
-        const sweepTween = gsap.to(sweepClip, {
-            width: '104%',
-            duration: 1.25,
-            ease: 'power2.inOut',
-            repeat: -1,
-            yoyo: true,
-        });
+        gsap.set(sweep, { clipPath: 'inset(0 101% 0 0)' });
 
         const closePreloader = () => {
-            if (hasClosed) {
-                return;
-            }
-
-            hasClosed = true;
-
             const elapsed = performance.now() - startAt;
             const delaySeconds = Math.max(0, MIN_SHOW_MS - elapsed) / 1000;
 
-            gsap.delayedCall(delaySeconds, () => {
-                sweepTween.kill();
-
+            closeDelayCall = gsap.delayedCall(delaySeconds, () => {
                 gsap.timeline({
                     onComplete: () => {
                         (window as Window & { __xarkPreloaderComplete?: boolean }).__xarkPreloaderComplete = true;
@@ -81,13 +68,39 @@ const PagePreloader = () => {
             });
         };
 
-        const onWindowLoad = () => closePreloader();
+        const maybeClosePreloader = () => {
+            if (hasClosed || !isPageReady || !isSweepComplete) {
+                return;
+            }
+
+            hasClosed = true;
+            closePreloader();
+        };
+
+        const sweepTween = gsap.to(sweep, {
+            clipPath: 'inset(0 -1% 0 0)',
+            duration: 1.2,
+            ease: 'power2.inOut',
+            onComplete: () => {
+                isSweepComplete = true;
+                maybeClosePreloader();
+            },
+        });
+
+        const onWindowLoad = () => {
+            isPageReady = true;
+            maybeClosePreloader();
+        };
 
         if (document.readyState === 'complete') {
-            closePreloader();
+            isPageReady = true;
+            maybeClosePreloader();
         } else {
             window.addEventListener('load', onWindowLoad, { once: true });
-            safetyTimer = setTimeout(closePreloader, MAX_WAIT_MS);
+            safetyTimer = setTimeout(() => {
+                isPageReady = true;
+                maybeClosePreloader();
+            }, MAX_WAIT_MS);
         }
 
         return () => {
@@ -96,6 +109,7 @@ const PagePreloader = () => {
                 clearTimeout(safetyTimer);
             }
             sweepTween.kill();
+            closeDelayCall?.kill();
             document.body.style.overflow = '';
         };
     }, []);
@@ -117,17 +131,15 @@ const PagePreloader = () => {
                         aria-hidden="true"
                     />
                 </div>
-                <div className="page-preloader__logo-sweep-clip" ref={sweepClipRef}>
-                    <div className="page-preloader__logo page-preloader__logo--sweep">
-                        <Image
-                            src="/images/xark-green.png"
-                            alt=""
-                            width={381}
-                            height={69}
-                            priority
-                            aria-hidden="true"
-                        />
-                    </div>
+                <div className="page-preloader__logo page-preloader__logo--sweep" ref={sweepRef}>
+                    <Image
+                        src="/images/xark-green.png"
+                        alt=""
+                        width={381}
+                        height={69}
+                        priority
+                        aria-hidden="true"
+                    />
                 </div>
             </div>
         </div>

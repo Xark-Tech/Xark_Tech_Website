@@ -36,19 +36,14 @@
     filter: grayscale(1) brightness(1.35);
 }
 
-.route-transition-logo-sweep-clip {
-    position: absolute;
-    inset: 0;
-    width: 0;
-    overflow: hidden;
-}
-
 .route-transition-logo--sweep {
     position: absolute;
-    inset: -0.0625rem auto -0.0625rem -0.375rem;
-    width: calc(100% + 0.75rem);
+    top: 0;
+    bottom: 0;
+    left: -1.75%;
+    width: 103.5%;
     filter: drop-shadow(0 0 0.9rem rgba(147, 213, 10, 0.36));
-    will-change: transform;
+    will-change: clip-path;
 }
 
 .route-transition-content {
