@@ -1,12 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { SITE_BLACKOUT } from "@/lib/siteBlackout";
 
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import GlobalHoverFx from "../ui/GlobalHoverFx/GlobalHoverFx";
 import PagePreloader from "../ui/PagePreloader/PagePreloader";
 import RouteTransition from "../ui/RouteTransition/RouteTransition";
+import SiteBlackout from "../ui/SiteBlackout/SiteBlackout";
 import SiteAccessGate from "../ui/SiteAccessGate/SiteAccessGate";
 
 type LayoutChromeProps = {
@@ -20,6 +22,10 @@ const LayoutChrome = ({ children, initialHasRecentSiteAccess }: LayoutChromeProp
 
   if (isStudioRoute) {
     return <>{children}</>;
+  }
+
+  if (SITE_BLACKOUT) {
+    return <SiteBlackout />;
   }
 
   return (
