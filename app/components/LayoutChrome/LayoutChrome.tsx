@@ -9,14 +9,12 @@ import GlobalHoverFx from "../ui/GlobalHoverFx/GlobalHoverFx";
 import PagePreloader from "../ui/PagePreloader/PagePreloader";
 import RouteTransition from "../ui/RouteTransition/RouteTransition";
 import SiteBlackout from "../ui/SiteBlackout/SiteBlackout";
-import SiteAccessGate from "../ui/SiteAccessGate/SiteAccessGate";
 
 type LayoutChromeProps = {
-  initialHasRecentSiteAccess: boolean;
   children: React.ReactNode;
 };
 
-const LayoutChrome = ({ children, initialHasRecentSiteAccess }: LayoutChromeProps) => {
+const LayoutChrome = ({ children }: LayoutChromeProps) => {
   const pathname = usePathname();
   const isStudioRoute = pathname?.startsWith("/studio");
 
@@ -31,7 +29,6 @@ const LayoutChrome = ({ children, initialHasRecentSiteAccess }: LayoutChromeProp
   return (
     <>
       <PagePreloader />
-      <SiteAccessGate initialHasRecentSiteAccess={initialHasRecentSiteAccess} />
       <GlobalHoverFx />
       <Header />
       <RouteTransition>{children}</RouteTransition>
