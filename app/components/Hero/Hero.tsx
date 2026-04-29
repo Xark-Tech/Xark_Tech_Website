@@ -6,8 +6,8 @@ import ArrowButton from '../ui/ArrowButton/ArrowButton';
 import './style.scss';
 
 const HERO_VIDEO_SOURCES = {
-    mp4: '/video/xark-final-2.mp4',
-    webm: '/video/xark-final-2.webm',
+    mp4: '/video/video-new-compressed.mp4',
+    webm: '/video/video-new.webm',
 } as const;
 const HERO_COPY_HIDE_START = 26.5;
 const HERO_COPY_HIDE_END = 31;
