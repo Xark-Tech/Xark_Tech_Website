@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import ArrowButton from '../ui/ArrowButton/ArrowButton';
-import { hasRecentSiteAccessClientGrant } from '@/lib/siteAccess';
 import './style.scss';
 
 const HERO_VIDEO_SOURCES = {
@@ -13,6 +12,8 @@ const HERO_VIDEO_SOURCES = {
 const HERO_COPY_HIDE_START = 26.5;
 const HERO_COPY_HIDE_END = 31;
 
+type XarkWindow = Window & { __xarkPreloaderComplete?: boolean };
+
 const Hero = () => {
     const heroRef = useRef<HTMLElement | null>(null);
     const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -20,128 +21,94 @@ const Hero = () => {
     const [hasVideoError, setHasVideoError] = useState(false);
     const [videoSource, setVideoSource] = useState<string | null>(null);
     const [isHeroCopyHidden, setIsHeroCopyHidden] = useState(false);
-    const [hasSiteAccess, setHasSiteAccess] = useState(false);
-    const [isHeroInView, setIsHeroInView] = useState(true);
 
+    // Pick the best supported video format once on mount
     useEffect(() => {
         let isMounted = true;
+        const probe = document.createElement('video');
 
-        const pickVideoSource = async () => {
-            const probe = document.createElement('video');
-            const candidates = [
-                {
-                    src: HERO_VIDEO_SOURCES.mp4,
-                    type: 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',
-                },
-                {
-                    src: HERO_VIDEO_SOURCES.webm,
-                    type: 'video/webm; codecs="vp8, vorbis"',
-                },
-            ];
+        const src =
+            probe.canPlayType('video/mp4') !== ''
+                ? HERO_VIDEO_SOURCES.mp4
+                : probe.canPlayType('video/webm') !== ''
+                  ? HERO_VIDEO_SOURCES.webm
+                  : null;
 
-            for (const candidate of candidates) {
-                if (!probe.canPlayType(candidate.type)) {
-                    continue;
-                }
-
-                try {
-                    const response = await fetch(candidate.src, {
-                        method: 'HEAD',
-                        cache: 'no-store',
-                    });
-
-                    if (response.ok) {
-                        if (isMounted) {
-                            setVideoSource(candidate.src);
-                        }
-                        return;
-                    }
-                } catch {}
-            }
-
-            if (isMounted) {
+        if (isMounted) {
+            if (src) {
+                setVideoSource(src);
+            } else {
                 setHasVideoError(true);
             }
-        };
-
-        pickVideoSource();
+        }
 
         return () => {
             isMounted = false;
         };
     }, []);
 
+    // Imperatively set muted on the DOM node (React's `muted` prop is broken
+    // in many versions and the browser won't autoplay un-muted video).
+    // Also directly wire up play() once the preloader signals it's done.
     useEffect(() => {
-        if (typeof window === 'undefined') {
+        const video = videoRef.current;
+        if (!video || hasVideoError || !videoSource) return;
+
+        // Ensure the video is truly muted at the DOM level so autoplay is allowed
+        video.muted = true;
+
+        const tryPlay = () => {
+            if (!videoRef.current) return;
+            videoRef.current.muted = true; // re-assert in case browser reset it
+            videoRef.current.play().catch(() => {});
+        };
+
+        // If the preloader already finished (e.g. navigating back to home),
+        // start playing immediately.
+        if ((window as XarkWindow).__xarkPreloaderComplete) {
+            tryPlay();
             return;
         }
 
-        const syncSiteAccess = () => {
-            setHasSiteAccess(hasRecentSiteAccessClientGrant());
-        };
-
-        syncSiteAccess();
-        window.addEventListener('xark:site-access-granted', syncSiteAccess);
+        // Otherwise wait for the preloader to finish, then play.
+        window.addEventListener('xark:preloader-complete', tryPlay, { once: true });
 
         return () => {
-            window.removeEventListener('xark:site-access-granted', syncSiteAccess);
+            window.removeEventListener('xark:preloader-complete', tryPlay);
         };
-    }, []);
+    }, [hasVideoError, videoSource]);
 
+    // Pause when scrolled out of view; resume when back in view
     useEffect(() => {
         const hero = heroRef.current;
-        if (!hero || typeof IntersectionObserver === 'undefined') {
-            return;
-        }
+        if (!hero || typeof IntersectionObserver === 'undefined') return;
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                setIsHeroInView(entry.isIntersecting && entry.intersectionRatio > 0.28);
+                const video = videoRef.current;
+                if (!video) return;
+                if (entry.isIntersecting && entry.intersectionRatio > 0.28) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
             },
-            {
-                threshold: [0, 0.28, 0.45],
-            },
+            { threshold: [0, 0.28, 0.45] },
         );
 
         observer.observe(hero);
-
-        return () => {
-            observer.disconnect();
-        };
+        return () => observer.disconnect();
     }, []);
-
-    useEffect(() => {
-        if (hasVideoError || !videoSource) {
-            setIsHeroCopyHidden(false);
-        }
-    }, [hasVideoError, videoSource]);
-
-    useEffect(() => {
-        const video = videoRef.current;
-
-        if (!video || hasVideoError || !videoSource) {
-            return;
-        }
-
-        if (!hasSiteAccess || !isHeroInView) {
-            video.pause();
-            return;
-        }
-
-        video.play().catch(() => {});
-    }, [hasSiteAccess, hasVideoError, isHeroInView, videoSource]);
 
     const handleToggleMute = () => {
         setIsMuted((current) => {
             const nextMuted = !current;
-
             if (videoRef.current) {
                 videoRef.current.muted = nextMuted;
                 if (!nextMuted) {
                     videoRef.current.play().catch(() => {});
                 }
             }
-
             return nextMuted;
         });
     };
@@ -151,13 +118,11 @@ const Hero = () => {
             setVideoSource(HERO_VIDEO_SOURCES.webm);
             return;
         }
-
         setHasVideoError(true);
     };
 
     const syncHeroCopyVisibility = () => {
         const video = videoRef.current;
-
         if (!video) {
             setIsHeroCopyHidden(false);
             return;
@@ -173,11 +138,8 @@ const Hero = () => {
             Number.isFinite(video.duration) && video.duration > 0
                 ? Math.min(HERO_COPY_HIDE_END, video.duration)
                 : HERO_COPY_HIDE_END;
-        const shouldHideCopy =
-            currentTime >= HERO_COPY_HIDE_START &&
-            currentTime < hideEndTime;
 
-        setIsHeroCopyHidden(shouldHideCopy);
+        setIsHeroCopyHidden(currentTime >= HERO_COPY_HIDE_START && currentTime < hideEndTime);
     };
 
     return (
@@ -198,10 +160,9 @@ const Hero = () => {
                         ref={videoRef}
                         className="hero__video"
                         loop
-                        muted={isMuted}
+                        autoPlay
                         playsInline
                         preload="auto"
-                        defaultMuted
                         poster="/images/hero-fall-back-image.png"
                         disablePictureInPicture
                         onTimeUpdate={syncHeroCopyVisibility}

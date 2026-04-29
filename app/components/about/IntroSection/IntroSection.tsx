@@ -6,8 +6,6 @@ import SectionHeader from '../../ui/SectionHeader/SectionHeader';
 import './style.scss';
 
 const metrics = [
-    { value: 1, label: 'Year of Focused Execution', hasPlus: false },
-    { value: 10, label: 'Core Engineering Team', hasPlus: false },
     { value: 4, label: 'Domain Advisors (Defence, Space, Telecom, Semiconductor)', hasPlus: false },
     { value: 150, label: 'Years of RF Experience', hasPlus: false },
 ];
