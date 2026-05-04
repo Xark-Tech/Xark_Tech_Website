@@ -220,7 +220,7 @@ const Hero = () => {
                     <div className="hero__text">
                         <div className={`hero__copy${isHeroCopyHidden ? ' hero__copy--hidden' : ''}`}>
                             <h1 className="hero__title">
-                                GaN RF design for radar, SatCom, and telecom infrastructure.
+                                RF Semiconductor Design For Radar.
                             </h1>
                             <p className="hero__subtext">
                                 From MMICs to phased arrays-engineered for performance, scalability, and
