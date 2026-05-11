@@ -220,11 +220,10 @@ const Hero = () => {
                     <div className="hero__text">
                         <div className={`hero__copy${isHeroCopyHidden ? ' hero__copy--hidden' : ''}`}>
                             <h1 className="hero__title">
-                                RF Semiconductor Design For Radar.
+                                RF Semiconductor. Chip to Antenna.
                             </h1>
                             <p className="hero__subtext">
-                                From MMICs to phased arrays-engineered for performance, scalability, and
-                                reliability.
+                                GaN and GaAs MMICs, front-end modules, and phased array antenna systems — designed for defence, space, and SatCom.
                             </p>
                         </div>
                     </div>

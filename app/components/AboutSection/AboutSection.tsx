@@ -23,12 +23,9 @@ const AboutSection = () => {
 
                         {/* Description Paragraph */}
                         <p className="about-description">
-                            XARK Technologies is a deep-tech, fabless semiconductor RF company designing MMICs,
-                            solid-state RF subsystems, phased-array antennas, and antenna-FEM integrated solutions for a
-                            wide range of connectivity, sensing, and communication systems. By combining component-
-                            level semiconductor design with system-level RF understanding, we help customers across
-                            defence, space, telecommunications, and other performance-critical RF programs move from
-                            architecture to deployment with more confidence.
+                            XARK Technologies is a deep-tech fabless RF semiconductor company designing MMICs,
+                            solid-state RF subsystems, phased array antennas, and antenna-FEM solutions for defence,
+                            space, and SatCom.
                         </p>
                     </div>
 
