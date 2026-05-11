@@ -7,6 +7,10 @@ import type { BlogCardPost } from "./blogPosts";
 import { getBlogPosts } from "./blogPosts";
 
 type HomePageSettingsRaw = {
+  heroTitle?: string | null;
+  heroSubtext?: string | null;
+  aboutSectionTitle?: unknown[] | null;
+  aboutSectionDescription?: string | null;
   featuredApplications?: Array<{
     title?: string;
     previewText?: string | null;
@@ -26,6 +30,10 @@ type HomePageSettingsRaw = {
 
 const HOME_PAGE_SETTINGS_QUERY = groq`
   *[_type == "homePageSettings" && _id == "homePageSettings"][0]{
+    heroTitle,
+    heroSubtext,
+    aboutSectionTitle,
+    aboutSectionDescription,
     "featuredApplications": featuredApplications[]->{
       title,
       "previewText": pt::text(body[_type == "block"][0..0]),
@@ -159,5 +167,64 @@ export const getHomePageFeaturedBlogPosts = async (limit = 3): Promise<BlogCardP
     return [...selectedPosts, ...fallbackPosts].slice(0, limit);
   } catch {
     return getBlogPosts(limit);
+  }
+};
+
+const DEFAULT_HERO_TITLE = "RF Semiconductor. Chip to Antenna.";
+const DEFAULT_HERO_SUBTEXT =
+  "GaN and GaAs MMICs, front-end modules, and phased array antenna systems — designed for defence, space, and SatCom.";
+const DEFAULT_ABOUT_DESCRIPTION =
+  "XARK Technologies is a deep-tech fabless RF semiconductor company designing MMICs, solid-state RF subsystems, phased array antennas, and antenna-FEM solutions for defence, space, and SatCom.";
+
+export type HomePageSettings = {
+  heroTitle: string;
+  heroSubtext: string;
+  aboutSectionTitle: unknown[] | null;
+  aboutSectionDescription: string;
+};
+
+export const getHomePageSettings = async (): Promise<HomePageSettings> => {
+  try {
+    const settings = await client.fetch<HomePageSettingsRaw | null>(
+      HOME_PAGE_SETTINGS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    );
+
+    const heroTitle =
+      typeof settings?.heroTitle === "string" && settings.heroTitle.trim()
+        ? settings.heroTitle
+        : DEFAULT_HERO_TITLE;
+
+    const heroSubtext =
+      typeof settings?.heroSubtext === "string" && settings.heroSubtext.trim()
+        ? settings.heroSubtext
+        : DEFAULT_HERO_SUBTEXT;
+
+    const aboutSectionDescription =
+      typeof settings?.aboutSectionDescription === "string" &&
+      settings.aboutSectionDescription.trim()
+        ? settings.aboutSectionDescription
+        : DEFAULT_ABOUT_DESCRIPTION;
+
+    const aboutSectionTitle =
+      Array.isArray(settings?.aboutSectionTitle) &&
+      settings.aboutSectionTitle.length > 0
+        ? settings.aboutSectionTitle
+        : null;
+
+    return {
+      heroTitle,
+      heroSubtext,
+      aboutSectionTitle,
+      aboutSectionDescription,
+    };
+  } catch {
+    return {
+      heroTitle: DEFAULT_HERO_TITLE,
+      heroSubtext: DEFAULT_HERO_SUBTEXT,
+      aboutSectionTitle: null,
+      aboutSectionDescription: DEFAULT_ABOUT_DESCRIPTION,
+    };
   }
 };

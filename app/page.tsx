@@ -9,6 +9,7 @@ import { getBrandLogos } from '@/sanity/lib/brandLogos';
 import {
   getHomePageFeaturedApplications,
   getHomePageFeaturedBlogPosts,
+  getHomePageSettings,
 } from '@/sanity/lib/homePage';
 
 const formatCardDate = (date: string) =>
@@ -18,9 +19,13 @@ const formatCardDate = (date: string) =>
   });
 
 export default async function Home() {
-  const latestApplications = await getHomePageFeaturedApplications(3);
-  const latestBlogPosts = await getHomePageFeaturedBlogPosts(3);
-  const brandLogos = await getBrandLogos();
+  const [settings, latestApplications, latestBlogPosts, brandLogos] =
+    await Promise.all([
+      getHomePageSettings(),
+      getHomePageFeaturedApplications(3),
+      getHomePageFeaturedBlogPosts(3),
+      getBrandLogos(),
+    ]);
 
   const homeBlogPosts: BlogPostItem[] = latestBlogPosts.map((post) => ({
     title: post.title,
@@ -32,8 +37,11 @@ export default async function Home() {
 
   return (
     <main>
-      <Hero />
-      <AboutSection />
+      <Hero heroTitle={settings.heroTitle} heroSubtext={settings.heroSubtext} />
+      <AboutSection
+        aboutSectionTitle={settings.aboutSectionTitle}
+        aboutSectionDescription={settings.aboutSectionDescription}
+      />
       <CoreCapabilitiesSection />
       <WhereWeOperateSection items={latestApplications} />
       <BlogSection posts={homeBlogPosts} maxItems={3} />

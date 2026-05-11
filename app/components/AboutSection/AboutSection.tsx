@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import Image from 'next/image';
+import { PortableText } from '@portabletext/react';
 import ArrowButton from '../ui/ArrowButton/ArrowButton';
 import './style.scss';
 
-const AboutSection = () => {
+interface AboutSectionProps {
+    aboutSectionTitle?: unknown[] | null;
+    aboutSectionDescription?: string;
+}
+
+const portableTextComponents = {
+    block: {
+        normal: ({ children }: { children?: ReactNode }) => <>{children}</>,
+    },
+    marks: {
+        greenHighlight: ({ children }: { children?: ReactNode }) => (
+            <span className="text-cta-green">{children}</span>
+        ),
+    },
+};
+
+const DEFAULT_ABOUT_TITLE: unknown[] = [
+    {
+        _type: 'block',
+        _key: 'default',
+        style: 'normal',
+        children: [
+            { _type: 'span', _key: 'a', text: 'Engineered for RF Systems ', marks: [] },
+            { _type: 'span', _key: 'b', text: 'Across Sectors', marks: ['greenHighlight'] },
+        ],
+        markDefs: [],
+    },
+];
+
+const DEFAULT_ABOUT_DESCRIPTION =
+    'XARK Technologies is a deep-tech fabless RF semiconductor company designing MMICs, solid-state RF subsystems, phased array antennas, and antenna-FEM solutions for defence, space, and SatCom.';
+
+const AboutSection = ({
+    aboutSectionTitle,
+    aboutSectionDescription,
+}: AboutSectionProps) => {
+    const hasCmsTitle =
+        Array.isArray(aboutSectionTitle) && aboutSectionTitle.length > 0;
+    const titleBlocks = hasCmsTitle ? aboutSectionTitle : DEFAULT_ABOUT_TITLE;
+    const description = aboutSectionDescription || DEFAULT_ABOUT_DESCRIPTION;
+
     return (
         <section className="about-section pt-[24px] pb-[44px] md:py-[104px] bg-black">
             <div className="container">
@@ -18,14 +59,15 @@ const AboutSection = () => {
 
                         {/* Main Title */}
                         <h2 className="about-title">
-                            Engineered for RF Systems <span className="text-cta-green">Across Sectors</span>
+                            <PortableText
+                                value={titleBlocks}
+                                components={portableTextComponents}
+                            />
                         </h2>
 
                         {/* Description Paragraph */}
                         <p className="about-description">
-                            XARK Technologies is a deep-tech fabless RF semiconductor company designing MMICs,
-                            solid-state RF subsystems, phased array antennas, and antenna-FEM solutions for defence,
-                            space, and SatCom.
+                            {description}
                         </p>
                     </div>
 

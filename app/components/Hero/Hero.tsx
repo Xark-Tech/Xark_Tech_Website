@@ -14,7 +14,12 @@ const HERO_COPY_HIDE_END = 31;
 
 type XarkWindow = Window & { __xarkPreloaderComplete?: boolean };
 
-const Hero = () => {
+interface HeroProps {
+    heroTitle?: string;
+    heroSubtext?: string;
+}
+
+const Hero = ({ heroTitle, heroSubtext }: HeroProps) => {
     const heroRef = useRef<HTMLElement | null>(null);
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isMuted, setIsMuted] = useState(true);
@@ -220,10 +225,10 @@ const Hero = () => {
                     <div className="hero__text">
                         <div className={`hero__copy${isHeroCopyHidden ? ' hero__copy--hidden' : ''}`}>
                             <h1 className="hero__title">
-                                RF Semiconductor. Chip to Antenna.
+                                {heroTitle || 'RF Semiconductor. Chip to Antenna.'}
                             </h1>
                             <p className="hero__subtext">
-                                GaN and GaAs MMICs, front-end modules, and phased array antenna systems — designed for defence, space, and SatCom.
+                                {heroSubtext || 'GaN and GaAs MMICs, front-end modules, and phased array antenna systems — designed for defence, space, and SatCom.'}
                             </p>
                         </div>
                     </div>

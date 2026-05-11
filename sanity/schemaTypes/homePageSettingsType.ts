@@ -6,6 +6,45 @@ export const homePageSettingsType = defineType({
   type: "document",
   fields: [
     defineField({
+      name: "heroTitle",
+      title: "Hero Title",
+      description: "Main headline on the homepage hero. Falls back to default if left empty.",
+      type: "string",
+    }),
+    defineField({
+      name: "heroSubtext",
+      title: "Hero Subtext",
+      description: "Short paragraph below the hero title. Falls back to default if left empty.",
+      type: "string",
+    }),
+    defineField({
+      name: "aboutSectionTitle",
+      title: "About Section Title",
+      description:
+        "Title for the About section on the homepage. Use the 'Green Highlight' decorator to color part of the text green.",
+      type: "array",
+      of: [
+        defineField({
+          name: "block",
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+          marks: {
+            decorators: [
+              { title: "Strong", value: "strong" },
+              { title: "Emphasis", value: "em" },
+              { title: "Green Highlight", value: "greenHighlight" },
+            ],
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: "aboutSectionDescription",
+      title: "About Section Description",
+      description: "Paragraph text for the About section. Falls back to default if left empty.",
+      type: "text",
+    }),
+    defineField({
       name: "featuredApplications",
       title: "Featured Application Cards",
       description:
