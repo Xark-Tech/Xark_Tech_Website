@@ -22,6 +22,14 @@ export const blogPostType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "useHtmlFile",
+      title: "Use HTML File",
+      type: "boolean",
+      description:
+        "Turn ON to upload a custom .html file instead of using the body editor. When ON, the HTML File field is shown and the Body field is hidden.",
+      initialValue: false,
+    }),
+    defineField({
       name: "category",
       title: "Category",
       type: "reference",
@@ -33,6 +41,7 @@ export const blogPostType = defineType({
       title: "Excerpt",
       type: "text",
       rows: 3,
+      description: "Short description shown on the listing card.",
       validation: (Rule) => Rule.required().max(220),
     }),
     defineField({
@@ -48,15 +57,16 @@ export const blogPostType = defineType({
       name: "mainImage",
       title: "Main Image",
       type: "image",
-      description: "Primary cover image. This stays as the first image in the blog detail gallery.",
+      description: "Cover image shown on the listing card.",
       options: { hotspot: true },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "additionalImages",
       title: "Additional Images",
-      description: "Optional extra images shown after the main image in the blog detail gallery.",
+      description: "Extra images shown in the blog detail gallery.",
       type: "array",
+      hidden: ({ document }) => document?.useHtmlFile === true,
       of: [
         {
           type: "image",
@@ -71,6 +81,21 @@ export const blogPostType = defineType({
           ],
         },
       ],
+    }),
+    defineField({
+      name: "htmlFile",
+      title: "HTML File",
+      type: "file",
+      description: "Upload a .html file. This replaces the body content on the detail page.",
+      options: { accept: ".html,.htm" },
+      hidden: ({ document }) => document?.useHtmlFile !== true,
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.useHtmlFile === true && !value) {
+            return "HTML File is required when 'Use HTML File' is turned on";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "seoTitle",
@@ -89,6 +114,7 @@ export const blogPostType = defineType({
       name: "body",
       title: "Body",
       type: "array",
+      hidden: ({ document }) => document?.useHtmlFile === true,
       of: [
         { type: "block" },
         {
@@ -108,8 +134,37 @@ export const blogPostType = defineType({
             }),
           ],
         },
+        {
+          type: "object",
+          name: "video",
+          title: "Video",
+          fields: [
+            defineField({
+              name: "url",
+              title: "Video URL",
+              type: "url",
+              description:
+                "YouTube or Vimeo embed URL (e.g. https://www.youtube.com/embed/VIDEO_ID).",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "caption",
+              title: "Caption",
+              type: "string",
+            }),
+          ],
+          preview: {
+            select: { title: "caption", subtitle: "url" },
+          },
+        },
       ],
-      validation: (Rule) => Rule.required().min(1),
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.useHtmlFile !== true && (!value || value.length === 0)) {
+            return "Body is required for normal blog posts";
+          }
+          return true;
+        }),
     }),
   ],
   preview: {

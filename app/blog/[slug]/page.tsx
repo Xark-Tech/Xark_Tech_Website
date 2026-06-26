@@ -5,6 +5,7 @@ import React, { Suspense, type ReactNode } from 'react';
 import BlogSection, { BlogPostItem } from '@/app/components/BlogSection/BlogSection';
 import BlogCategoryPills from '@/app/components/BlogCategoryPills/BlogCategoryPills';
 import BlogHeroGallery from '@/app/components/blog/BlogHeroGallery/BlogHeroGallery';
+import BlogHtmlContent from '@/app/components/blog/BlogHtmlContent/BlogHtmlContent';
 import {
     getAllBlogSlugs,
     getBlogPostBySlug,
@@ -98,6 +99,27 @@ const portableTextComponents = {
         strong: ({ children }: { children?: ReactNode }) => <strong>{children}</strong>,
         em: ({ children }: { children?: ReactNode }) => <em>{children}</em>,
     },
+    types: {
+        video: ({ value }: { value?: { url?: string; caption?: string } }) => {
+            if (!value?.url) return null;
+            return (
+                <figure className="blog-detail-video">
+                    <div className="blog-detail-video__wrapper">
+                        <iframe
+                            src={value.url}
+                            title={value.caption || 'Embedded video'}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="blog-detail-video__iframe"
+                        />
+                    </div>
+                    {value.caption ? (
+                        <figcaption className="blog-detail-video__caption">{value.caption}</figcaption>
+                    ) : null}
+                </figure>
+            );
+        },
+    },
 };
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
@@ -122,6 +144,16 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         image: item.image,
         href: `/blog/${item.slug}`,
     }));
+
+    if (post.htmlFileUrl) {
+        return (
+            <main className="blog-detail-page-container-main">
+                <div className="blog-detail-page container">
+                    <BlogHtmlContent htmlFileUrl={post.htmlFileUrl} />
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="blog-detail-page-container-main">

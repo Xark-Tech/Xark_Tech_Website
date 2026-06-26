@@ -27,6 +27,7 @@ export type BlogDetailPost = {
   image: string;
   galleryImages: BlogHeroGalleryImage[];
   body: TypedObject[];
+  htmlFileUrl?: string;
   seoTitle?: string;
   seoDescription?: string;
   categoryTitle?: string;
@@ -60,6 +61,7 @@ type BlogDetailPostRaw = BlogCardPostRaw & {
     alt?: string;
   }>;
   body?: TypedObject[] | unknown[];
+  htmlFileUrl?: string;
   seoTitle?: string;
   seoDescription?: string;
 };
@@ -97,6 +99,8 @@ const BLOG_POST_BY_SLUG_QUERY = groq`
       "src": asset->url,
       alt
     },
+    useHtmlFile,
+    "htmlFileUrl": htmlFile.asset->url,
     body,
     seoTitle,
     seoDescription
@@ -147,6 +151,11 @@ const normalizeDetailPost = (item: BlogDetailPostRaw | null): BlogDetailPost | n
   const base = normalizeCardPost(item);
   if (!base) return null;
 
+  const htmlFileUrl =
+    typeof item.htmlFileUrl === 'string' && item.htmlFileUrl.trim().length > 0
+      ? item.htmlFileUrl
+      : undefined;
+
   return {
     ...base,
     galleryImages: [
@@ -167,6 +176,7 @@ const normalizeDetailPost = (item: BlogDetailPostRaw | null): BlogDetailPost | n
         : []),
     ],
     body: Array.isArray(item.body) ? (item.body as TypedObject[]) : [],
+    htmlFileUrl,
     seoTitle: item.seoTitle,
     seoDescription: item.seoDescription,
   };

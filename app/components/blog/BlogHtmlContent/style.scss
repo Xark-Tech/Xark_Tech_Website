@@ -1,0 +1,35 @@
+@use '../../../../styles/variables' as *;
+
+.blog-html-content {
+    width: 100%;
+    color: $white;
+    font-family: $font-aeonik;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    iframe {
+        max-width: 100%;
+    }
+
+    &__loading,
+    &__error {
+        width: 100%;
+        padding: 2rem;
+        text-align: center;
+        color: $light-grey;
+        font-family: $font-aeonik;
+        font-size: 1rem;
+    }
+
+    &__error {
+        color: #ff6b6b;
+    }
+}
